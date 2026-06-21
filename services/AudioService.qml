@@ -1,14 +1,13 @@
 pragma Singleton
 import QtQuick
-import Quickshell.Services.Pipewire
+import Quickshell
+import Quickshell.Io
 
 QtObject {
     id: root
 
-    readonly property var sink: Pipewire.ready ? Pipewire.defaultAudioSink : null
-    
-    readonly property real volume: sink ? Math.round(sink.audio.volume * 100) : 0
-    readonly property bool isMuted: sink ? sink.audio.muted : true
+    property real volume: 0
+    property bool isMuted: false
 
     function getIcon() {
         if (isMuted || volume === 0) return "󰖁"; // muted
@@ -20,10 +19,31 @@ QtObject {
     readonly property string icon: getIcon()
     
     function toggleMute() {
-        if (sink) sink.audio.muted = !sink.audio.muted;
+        Quickshell.execDetached(["wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle"])
     }
     
     function setVolume(v) {
-        if (sink) sink.audio.volume = Math.max(0, Math.min(1, v / 100.0));
+        Quickshell.execDetached(["wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", (v / 100.0).toFixed(2)])
+    }
+
+    property Process process: Process {
+        command: ["bash", "-c", "while true; do wpctl get-volume @DEFAULT_AUDIO_SINK@; sleep 0.1; done"]
+        running: true
+        stdout: SplitParser {
+            onRead: data => {
+                let out = data.trim();
+                if (out === "") return;
+                
+                if (out.includes("[MUTED]")) {
+                    root.isMuted = true;
+                } else {
+                    root.isMuted = false;
+                }
+                let volMatch = out.match(/Volume: ([\d\.]+)/);
+                if (volMatch && volMatch[1]) {
+                    root.volume = Math.round(parseFloat(volMatch[1]) * 100);
+                }
+            }
+        }
     }
 }

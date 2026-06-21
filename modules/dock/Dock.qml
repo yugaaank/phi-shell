@@ -23,8 +23,8 @@ PanelWindow {
     }
 
     // Dynamic sizing based on your icon size config
-    implicitHeight: Config.dockIconSize + 24
-    implicitWidth: dockRow.implicitWidth + 48
+    implicitHeight: Config.dockIconSize + 10
+    implicitWidth: dockRow.implicitWidth + 10
 
     StyledRect {
         anchors.fill: parent

@@ -30,7 +30,10 @@ QtObject {
                 if (data.appearance.borderRadius !== undefined) root.borderRadius = data.appearance.borderRadius;
                 if (data.appearance.theme !== undefined) root.theme = data.appearance.theme;
                 if (data.appearance.fontFamily !== undefined) root.fontFamily = data.appearance.fontFamily;
-                if (data.appearance.wallpaperPath !== undefined) root.wallpaperPath = data.appearance.wallpaperPath;
+                if (data.appearance.wallpaperPath !== undefined && data.appearance.wallpaperPath !== root.wallpaperPath) {
+                    root.wallpaperPath = data.appearance.wallpaperPath;
+                    Quickshell.execDetached(["bash", "-c", Quickshell.env("HOME") + "/.config/myshell/scripts/extract_colors.sh " + root.wallpaperPath]);
+                }
             }
             if (data.widgets) {
                 if (data.widgets.showBattery !== undefined) root.showBattery = data.widgets.showBattery;

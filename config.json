@@ -2,13 +2,13 @@
   "layout": {
     "barMode": "floating",
     "barMargin": 5,
-    "dockIconSize": 48
+    "dockIconSize": 30
   },
   "appearance": {
     "borderRadius": 12,
     "theme": "material-you",
     "fontFamily": "Inter",
-    "wallpaperPath": "/home/yugaaank/Pictures/Wallpapers/a_black_sand_with_white_foamy_waves.png"
+    "wallpaperPath": "/home/yugaaank/Pictures/Wallpapers/a_computer_generated_image_of_a_machine.png"
   },
   "widgets": {
     "showBattery": true,

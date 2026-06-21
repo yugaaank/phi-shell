@@ -25,7 +25,7 @@ PanelWindow {
     exclusiveZone: implicitHeight + (Config.barMargin * 2)
 
     color: "transparent"
-    implicitHeight: 40
+    implicitHeight: 30
     
     // Left: Workspaces
     StyledRect {

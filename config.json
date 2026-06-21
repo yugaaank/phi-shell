@@ -1,6 +1,6 @@
 {
   "layout": {
-    "barMode": "floating",
+    "barMode": "attached",
     "barMargin": 5,
     "dockIconSize": 30,
     "barLeft": [
@@ -19,8 +19,8 @@
     "borderRadius": 10,
     "theme": "material-you",
     "fontFamily": "Inter",
-    "wallpaperPath": "/home/yugaaank/Pictures/Wallpapers/a_mountain_with_a_lake_in_the_background.jpg",
-    "widgetOutline": true
+    "wallpaperPath": "/home/yugaaank/Pictures/Wallpapers/japanese-castle-pixel-digital-art.jpg",
+    "widgetOutline": false
   },
   "widgets": {
     "showBattery": true,

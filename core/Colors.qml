@@ -9,6 +9,7 @@ QtObject {
     property string background: "#1e1e2e"
     property string foreground: "#cdd6f4"
     property string primary: "#cba6f7"
+    property string onPrimaryColor: "#11111b"
     property string secondary: "#f38ba8"
     property string surface: "#313244"
     property string surfaceBorder: "#45475a"
@@ -21,6 +22,7 @@ QtObject {
             if (data.background) root.background = data.background;
             if (data.foreground) root.foreground = data.foreground;
             if (data.primary) root.primary = data.primary;
+            if (data.onPrimaryColor) root.onPrimaryColor = data.onPrimaryColor;
             if (data.secondary) root.secondary = data.secondary;
             if (data.surface) root.surface = data.surface;
             if (data.surfaceBorder) root.surfaceBorder = data.surfaceBorder;

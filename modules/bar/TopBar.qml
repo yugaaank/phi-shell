@@ -107,6 +107,12 @@ PanelWindow {
             height: rightPill.height
             width: rightPill.width
             
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: GlobalStates.sidebarOpen = !GlobalStates.sidebarOpen
+            }
+            
             StyledRect {
                 id: rightPill
                 anchors.centerIn: parent

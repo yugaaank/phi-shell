@@ -159,7 +159,7 @@ PanelWindow {
                                     Text {
                                         anchors.centerIn: parent
                                         text: modelData + 1
-                                        color: modelData === new Date().getDate() - 1 ? Colors.onPrimary : Colors.foreground
+                                        color: modelData === new Date().getDate() - 1 ? Colors.surface : Colors.foreground
                                         font.family: Config.fontFamily
                                         font.pixelSize: 12
                                     }

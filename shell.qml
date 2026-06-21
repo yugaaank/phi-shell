@@ -17,4 +17,5 @@ ShellRoot {
     AppLauncher {}
     SettingsApp {}
     Dashboard {}
+    Sidebar {}
 }

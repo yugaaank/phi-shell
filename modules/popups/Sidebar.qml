@@ -26,6 +26,21 @@ PanelWindow {
     // Bind to the global state
     visible: GlobalStates.sidebarOpen
     
+    // --- Pomodoro Engine ---
+    Timer {
+        interval: 1000
+        running: GlobalStates.pomodoroRunning && GlobalStates.pomodoroTimeRemaining > 0
+        repeat: true
+        onTriggered: {
+            GlobalStates.pomodoroTimeRemaining -= 1;
+            if (GlobalStates.pomodoroTimeRemaining === 0) {
+                GlobalStates.pomodoroRunning = false;
+                // play sound or notify
+                Quickshell.execDetached(["notify-send", "Pomodoro finished!", "Time for a break."]);
+            }
+        }
+    }
+    
     // Catch clicks outside to close
     MouseArea {
         anchors.fill: parent
@@ -76,9 +91,15 @@ PanelWindow {
                         GlobalStates.wifiName = wifi !== "" ? wifi : "Not connected";
                         GlobalStates.wifiConnected = wifi !== "";
                         
-                        // Using pactl or wpctl for mic mute
+                        let bt = Quickshell.exec("bluetoothctl devices Connected | head -n 1 | cut -d ' ' -f 3-").trim();
+                        GlobalStates.bluetoothName = bt !== "" ? bt : "Not connected";
+                        GlobalStates.bluetoothConnected = bt !== "";
+                        
                         let micStatus = Quickshell.exec("wpctl get-volume @DEFAULT_AUDIO_SOURCE@").trim();
                         GlobalStates.micMuted = micStatus.includes("MUTED");
+                        
+                        let sinkStatus = Quickshell.exec("wpctl get-volume @DEFAULT_AUDIO_SINK@").trim();
+                        GlobalStates.audioMuted = sinkStatus.includes("MUTED");
                     } catch(e) {}
                 }
             }
@@ -164,18 +185,24 @@ PanelWindow {
                             Layout.fillWidth: true
                             Layout.preferredHeight: 64
                             Layout.preferredWidth: 160
-                            color: Colors.primary
+                            color: GlobalStates.wifiConnected ? Colors.primary : Qt.alpha(Colors.surfaceBorder, 0.3)
+                            
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: Quickshell.execDetached(["nm-connection-editor"])
+                            }
                             
                             RowLayout {
                                 anchors.fill: parent
                                 anchors.margins: 12
                                 spacing: 12
                                 
-                                Text { text: "󰖩"; font.pixelSize: 24; color: Colors.onPrimaryColor }
+                                Text { text: GlobalStates.wifiConnected ? "󰖩" : "󰖪"; font.pixelSize: 24; color: GlobalStates.wifiConnected ? Colors.onPrimary : Colors.foreground }
                                 ColumnLayout {
                                     spacing: 2
-                                    Text { text: "Internet"; font.pixelSize: 13; font.bold: true; color: Colors.onPrimaryColor; font.family: Config.fontFamily }
-                                    Text { text: "i use arch btw"; font.pixelSize: 11; color: Qt.alpha(Colors.onPrimaryColor, 0.8); font.family: Config.fontFamily }
+                                    Text { text: "Internet"; font.pixelSize: 13; font.bold: true; color: GlobalStates.wifiConnected ? Colors.onPrimary : Colors.foreground; font.family: Config.fontFamily }
+                                    Text { text: GlobalStates.wifiName; font.pixelSize: 11; color: Qt.alpha(GlobalStates.wifiConnected ? Colors.onPrimary : Colors.foreground, 0.8); font.family: Config.fontFamily }
                                 }
                             }
                         }
@@ -185,18 +212,24 @@ PanelWindow {
                             Layout.fillWidth: true
                             Layout.preferredHeight: 64
                             Layout.preferredWidth: 140
-                            color: Colors.primary
+                            color: GlobalStates.bluetoothConnected ? Colors.primary : Qt.alpha(Colors.surfaceBorder, 0.3)
+                            
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: Quickshell.execDetached(["blueman-manager"])
+                            }
                             
                             RowLayout {
                                 anchors.fill: parent
                                 anchors.margins: 12
                                 spacing: 12
                                 
-                                Text { text: "󰂯"; font.pixelSize: 24; color: Colors.onPrimaryColor }
+                                Text { text: "󰂯"; font.pixelSize: 24; color: GlobalStates.bluetoothConnected ? Colors.onPrimary : Colors.foreground }
                                 ColumnLayout {
                                     spacing: 2
-                                    Text { text: "Bluetooth"; font.pixelSize: 13; font.bold: true; color: Colors.onPrimaryColor; font.family: Config.fontFamily }
-                                    Text { text: "Not connected"; font.pixelSize: 11; color: Qt.alpha(Colors.onPrimaryColor, 0.8); font.family: Config.fontFamily; elide: Text.ElideRight; Layout.fillWidth: true }
+                                    Text { text: "Bluetooth"; font.pixelSize: 13; font.bold: true; color: GlobalStates.bluetoothConnected ? Colors.onPrimary : Colors.foreground; font.family: Config.fontFamily }
+                                    Text { text: GlobalStates.bluetoothName; font.pixelSize: 11; color: Qt.alpha(GlobalStates.bluetoothConnected ? Colors.onPrimary : Colors.foreground, 0.8); font.family: Config.fontFamily; elide: Text.ElideRight; Layout.fillWidth: true }
                                 }
                             }
                         }
@@ -220,9 +253,19 @@ PanelWindow {
                         StyledRect {
                             Layout.preferredHeight: 64
                             Layout.preferredWidth: 64
-                            color: Colors.primary
+                            color: GlobalStates.micMuted ? Qt.alpha(Colors.surfaceBorder, 0.3) : Colors.primary
                             
-                            Text { anchors.centerIn: parent; text: "󰍬"; font.pixelSize: 24; color: Colors.onPrimaryColor }
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: {
+                                    Quickshell.exec(["wpctl", "set-mute", "@DEFAULT_AUDIO_SOURCE@", "toggle"]);
+                                    let micStatus = Quickshell.exec("wpctl get-volume @DEFAULT_AUDIO_SOURCE@").trim();
+                                    GlobalStates.micMuted = micStatus.includes("MUTED");
+                                }
+                            }
+                            
+                            Text { anchors.centerIn: parent; text: GlobalStates.micMuted ? "󰍭" : "󰍬"; font.pixelSize: 24; color: GlobalStates.micMuted ? Colors.foreground : Colors.onPrimary }
                         }
                         
                         // Audio
@@ -230,18 +273,28 @@ PanelWindow {
                             Layout.fillWidth: true
                             Layout.preferredHeight: 64
                             Layout.preferredWidth: 140
-                            color: Colors.primary
+                            color: GlobalStates.audioMuted ? Qt.alpha(Colors.surfaceBorder, 0.3) : Colors.primary
+                            
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: {
+                                    Quickshell.exec(["wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle"]);
+                                    let sinkStatus = Quickshell.exec("wpctl get-volume @DEFAULT_AUDIO_SINK@").trim();
+                                    GlobalStates.audioMuted = sinkStatus.includes("MUTED");
+                                }
+                            }
                             
                             RowLayout {
                                 anchors.fill: parent
                                 anchors.margins: 12
                                 spacing: 12
                                 
-                                Text { text: "󰕾"; font.pixelSize: 24; color: Colors.onPrimaryColor }
+                                Text { text: GlobalStates.audioMuted ? "󰖁" : "󰕾"; font.pixelSize: 24; color: GlobalStates.audioMuted ? Colors.foreground : Colors.onPrimary }
                                 ColumnLayout {
                                     spacing: 2
-                                    Text { text: "Audio output"; font.pixelSize: 13; font.bold: true; color: Colors.onPrimaryColor; font.family: Config.fontFamily }
-                                    Text { text: "Unmuted"; font.pixelSize: 11; color: Qt.alpha(Colors.onPrimaryColor, 0.8); font.family: Config.fontFamily }
+                                    Text { text: "Audio output"; font.pixelSize: 13; font.bold: true; color: GlobalStates.audioMuted ? Colors.foreground : Colors.onPrimary; font.family: Config.fontFamily }
+                                    Text { text: GlobalStates.audioMuted ? "Muted" : "Unmuted"; font.pixelSize: 11; color: Qt.alpha(GlobalStates.audioMuted ? Colors.foreground : Colors.onPrimary, 0.8); font.family: Config.fontFamily }
                                 }
                             }
                         }
@@ -251,18 +304,24 @@ PanelWindow {
                             Layout.fillWidth: true
                             Layout.preferredHeight: 64
                             Layout.preferredWidth: 160
-                            color: Qt.alpha(Colors.surfaceBorder, 0.3)
+                            color: GlobalStates.nightLightOn ? Colors.primary : Qt.alpha(Colors.surfaceBorder, 0.3)
+                            
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: GlobalStates.nightLightOn = !GlobalStates.nightLightOn
+                            }
                             
                             RowLayout {
                                 anchors.fill: parent
                                 anchors.margins: 12
                                 spacing: 12
                                 
-                                Text { text: "󰖔"; font.pixelSize: 24; color: Colors.foreground }
+                                Text { text: "󰖔"; font.pixelSize: 24; color: GlobalStates.nightLightOn ? Colors.onPrimary : Colors.foreground }
                                 ColumnLayout {
                                     spacing: 2
-                                    Text { text: "Night Light"; font.pixelSize: 13; font.bold: true; color: Colors.foreground; font.family: Config.fontFamily }
-                                    Text { text: "Auto, Inactive"; font.pixelSize: 11; color: Qt.alpha(Colors.foreground, 0.6); font.family: Config.fontFamily }
+                                    Text { text: "Night Light"; font.pixelSize: 13; font.bold: true; color: GlobalStates.nightLightOn ? Colors.onPrimary : Colors.foreground; font.family: Config.fontFamily }
+                                    Text { text: GlobalStates.nightLightOn ? "Active" : "Auto, Inactive"; font.pixelSize: 11; color: Qt.alpha(GlobalStates.nightLightOn ? Colors.onPrimary : Colors.foreground, 0.6); font.family: Config.fontFamily }
                                 }
                             }
                         }
@@ -415,7 +474,14 @@ PanelWindow {
                                     Column {
                                         anchors.centerIn: parent
                                         spacing: 4
-                                        Text { text: "25:00"; font.pixelSize: 40; font.family: Config.fontFamily; color: Colors.foreground; anchors.horizontalCenter: parent.horizontalCenter }
+                                        Text { 
+                                            text: {
+                                                let m = Math.floor(GlobalStates.pomodoroTimeRemaining / 60);
+                                                let s = GlobalStates.pomodoroTimeRemaining % 60;
+                                                return (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
+                                            }
+                                            font.pixelSize: 40; font.family: Config.fontFamily; color: Colors.foreground; anchors.horizontalCenter: parent.horizontalCenter 
+                                        }
                                         Text { text: "Focus"; font.pixelSize: 14; font.family: Config.fontFamily; color: Qt.alpha(Colors.foreground, 0.6); anchors.horizontalCenter: parent.horizontalCenter }
                                     }
                                 }
@@ -431,11 +497,24 @@ PanelWindow {
                             
                             Rectangle {
                                 width: 100; height: 36; radius: 18; color: Colors.primary
-                                Text { anchors.centerIn: parent; text: "Start"; font.pixelSize: 14; font.family: Config.fontFamily; font.bold: true; color: Colors.surface }
+                                MouseArea {
+                                    anchors.fill: parent
+                                    cursorShape: Qt.PointingHandCursor
+                                    onClicked: GlobalStates.pomodoroRunning = !GlobalStates.pomodoroRunning
+                                }
+                                Text { anchors.centerIn: parent; text: GlobalStates.pomodoroRunning ? "Pause" : "Start"; font.pixelSize: 14; font.family: Config.fontFamily; font.bold: true; color: Colors.surface }
                             }
                             
                             Rectangle {
                                 width: 100; height: 36; radius: 18; color: "transparent"
+                                MouseArea {
+                                    anchors.fill: parent
+                                    cursorShape: Qt.PointingHandCursor
+                                    onClicked: {
+                                        GlobalStates.pomodoroRunning = false;
+                                        GlobalStates.pomodoroTimeRemaining = 25 * 60;
+                                    }
+                                }
                                 Text { anchors.centerIn: parent; text: "Reset"; font.pixelSize: 14; font.family: Config.fontFamily; color: Qt.alpha(Colors.foreground, 0.7) }
                             }
                             

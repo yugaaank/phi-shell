@@ -17,6 +17,7 @@ echo "$MATUGEN_JSON" | jq '{
     background: .colors.background.default.color,
     foreground: .colors.on_background.default.color,
     primary: .colors.primary.default.color,
+    onPrimaryColor: .colors.on_primary.default.color,
     secondary: .colors.secondary.default.color,
     surface: .colors.surface_container.default.color,
     surfaceBorder: .colors.outline_variant.default.color

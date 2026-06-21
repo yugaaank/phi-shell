@@ -26,7 +26,7 @@ PanelWindow {
     exclusiveZone: implicitHeight + (Config.barMode === "floating" ? Config.barMargin * 2 : 0)
 
     color: Config.barMode === "attached" ? Colors.surface : "transparent"
-    implicitHeight: 36
+    implicitHeight: 40
     
     Item {
         anchors.fill: parent

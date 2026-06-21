@@ -3,6 +3,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import Quickshell
 import Quickshell.Wayland
+import Quickshell.Io
 import "../../core"
 import "../../components"
 
@@ -23,8 +24,22 @@ PanelWindow {
     // Transparent background for overlay
     color: "transparent"
     
-    // Bind to the global state
-    visible: GlobalStates.sidebarOpen
+    // Bind to the global state for logical open
+    property bool isOpen: GlobalStates.sidebarOpen
+    
+    // Window is visible if logically open or if animation is finishing
+    visible: isOpen || animTimer.running
+    
+    Timer {
+        id: animTimer
+        interval: 400
+    }
+    
+    onIsOpenChanged: {
+        if (!isOpen) {
+            animTimer.restart()
+        }
+    }
     
     // --- Pomodoro Engine ---
     Timer {
@@ -45,23 +60,41 @@ PanelWindow {
     MouseArea {
         anchors.fill: parent
         onClicked: GlobalStates.sidebarOpen = false
+        
+        // Add a backdrop fade effect
+        Rectangle {
+            anchors.fill: parent
+            color: "black"
+            opacity: sidebar.isOpen ? 0.3 : 0.0
+            Behavior on opacity { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
+        }
     }
     
     // The actual sidebar container
     Item {
+        id: sidebarContainer
         width: 420
         anchors {
             top: parent.top
             bottom: parent.bottom
-            right: parent.right
             topMargin: 40 + (Config.barMode === "floating" ? Config.barMargin : 0)
             bottomMargin: 16
-            rightMargin: 12
+        }
+        
+        // Slide in from right (parent.width + 20 to parent.width - width - 12)
+        x: sidebar.isOpen ? parent.width - width - 12 : parent.width + 20
+        
+        Behavior on x {
+            NumberAnimation {
+                duration: 400
+                easing.type: Easing.OutBack
+                easing.overshoot: 1.2
+            }
         }
         
         StyledRect {
             anchors.fill: parent
-            color: Qt.alpha(Colors.surface, 0.95)
+            color: Colors.surface
             radius: Config.borderRadius
             border.color: Colors.surfaceBorder
             border.width: 1
@@ -73,13 +106,18 @@ PanelWindow {
             }
             
             // --- Update Timers ---
-            Timer {
-                interval: 60000; running: GlobalStates.sidebarOpen; repeat: true; triggeredOnStart: true
-                onTriggered: {
-                    try {
-                        let stdout = Quickshell.exec("uptime -p");
-                        GlobalStates.uptime = stdout.trim();
-                    } catch(e) {}
+            Process {
+                command: ["bash", "-c", "while true; do uptime -p; sleep 60; done"]
+                running: true
+                stdout: SplitParser {
+                    onRead: data => {
+                        let up = data.trim();
+                        if (up.startsWith("up ")) {
+                            up = "Up " + up.substring(3);
+                        }
+                        up = up.replace(" hours", "h").replace(" minutes", "m").replace(",", "");
+                        GlobalStates.uptime = up;
+                    }
                 }
             }
             
@@ -112,56 +150,81 @@ PanelWindow {
                 // --- Header Row ---
                 RowLayout {
                     Layout.fillWidth: true
+                    Layout.preferredHeight: 48
                     spacing: 12
                     
-                    Text {
-                        text: "󰣇" // Arch Linux icon
-                        font.pixelSize: 24
-                        color: Colors.foreground
-                    }
-                    
-                    Text {
-                        text: GlobalStates.uptime
-                        font.pixelSize: 14
-                        font.family: Config.fontFamily
-                        color: Colors.foreground
+                    // Left Pill (Logo + Uptime)
+                    Rectangle {
+                        Layout.preferredHeight: 48
+                        Layout.preferredWidth: Math.max(120, uptimeRow.implicitWidth + 32)
+                        radius: height / 2
+                        color: Qt.alpha(Colors.surfaceBorder, 0.15)
+                        
+                        Row {
+                            id: uptimeRow
+                            anchors.centerIn: parent
+                            spacing: 12
+                            
+                            Text {
+                                text: "󰣇" // Arch Linux icon
+                                font.pixelSize: 18
+                                color: Colors.foreground
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                            
+                            Text {
+                                text: GlobalStates.uptime
+                                font.pixelSize: 13
+                                font.bold: true
+                                font.family: Config.fontFamily
+                                color: Colors.foreground
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                        }
                     }
                     
                     Item { Layout.fillWidth: true } // Spacer
                     
-                    // Header Buttons
-                    Row {
-                        spacing: 8
+                    // Right Pill (Buttons)
+                    Rectangle {
+                        Layout.preferredHeight: 48
+                        Layout.preferredWidth: rightButtonsRow.implicitWidth + 32
+                        radius: height / 2
+                        color: Qt.alpha(Colors.surfaceBorder, 0.15)
                         
-                        Repeater {
-                            model: ["󰏫", "󰑐", "", "⏻"]
-                            Rectangle {
-                                width: 36
-                                height: 36
-                                radius: 18
-                                color: "transparent"
+                        Row {
+                            id: rightButtonsRow
+                            anchors.centerIn: parent
+                            spacing: 16
+                            
+                            Repeater {
+                                model: ["󰏫", "󰑐", "", "⏻"]
                                 
                                 Text {
-                                    anchors.centerIn: parent
                                     text: modelData
-                                    font.pixelSize: 18
+                                    font.pixelSize: 16
                                     color: Colors.foreground
-                                }
-                                
-                                MouseArea {
-                                    anchors.fill: parent
-                                    hoverEnabled: true
-                                    cursorShape: Qt.PointingHandCursor
-                                    onEntered: parent.color = Qt.alpha(Colors.surfaceBorder, 0.5)
-                                    onExited: parent.color = "transparent"
-                                    onClicked: {
-                                        if (modelData === "") {
-                                            GlobalStates.settingsOpen = !GlobalStates.settingsOpen;
-                                            GlobalStates.sidebarOpen = false;
-                                        } else if (modelData === "⏻") {
-                                            Quickshell.execDetached(["bash", "-c", "wlogout || systemctl poweroff"]);
-                                        } else if (modelData === "󰑐") {
-                                            Quickshell.execDetached(["killall", "qs"]);
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        anchors.margins: -8 // Expand hit area
+                                        hoverEnabled: true
+                                        cursorShape: Qt.PointingHandCursor
+                                        onEntered: parent.color = Colors.primary
+                                        onExited: parent.color = Colors.foreground
+                                        onClicked: {
+                                            if (modelData === "") {
+                                                GlobalStates.settingsOpen = !GlobalStates.settingsOpen;
+                                                GlobalStates.sidebarOpen = false;
+                                            } else if (modelData === "⏻") {
+                                                Quickshell.execDetached(["bash", "-c", "wlogout || systemctl poweroff"]);
+                                            } else if (modelData === "󰑐") {
+                                                Quickshell.execDetached(["bash", "-c", "killall qs; sleep 0.5; qs -p ~/.config/myshell/shell.qml & disown"]);
+                                            } else if (modelData === "󰏫") {
+                                                // Edit icon mockup
+                                                Quickshell.execDetached(["notify-send", "Edit toggles"]);
+                                            }
                                         }
                                     }
                                 }
@@ -170,21 +233,23 @@ PanelWindow {
                     }
                 }
                 
-                // --- Quick Settings Grid ---
-                ColumnLayout {
+                // --- Quick Settings Toggles Row (end-4 style) ---
+                StyledRect {
                     Layout.fillWidth: true
-                    spacing: 12
+                    Layout.preferredHeight: 64
+                    color: Qt.alpha(Colors.surface, 0.4)
+                    radius: Config.borderRadius
                     
-                    // Row 1
                     RowLayout {
-                        Layout.fillWidth: true
+                        anchors.fill: parent
+                        anchors.margins: 10
                         spacing: 12
                         
-                        // Internet
-                        StyledRect {
+                        // Wifi Toggle
+                        Rectangle {
+                            Layout.fillHeight: true
                             Layout.fillWidth: true
-                            Layout.preferredHeight: 64
-                            Layout.preferredWidth: 160
+                            radius: height / 2
                             color: GlobalStates.wifiConnected ? Colors.primary : Qt.alpha(Colors.surfaceBorder, 0.3)
                             
                             MouseArea {
@@ -192,26 +257,14 @@ PanelWindow {
                                 cursorShape: Qt.PointingHandCursor
                                 onClicked: Quickshell.execDetached(["nm-connection-editor"])
                             }
-                            
-                            RowLayout {
-                                anchors.fill: parent
-                                anchors.margins: 12
-                                spacing: 12
-                                
-                                Text { text: GlobalStates.wifiConnected ? "󰖩" : "󰖪"; font.pixelSize: 24; color: GlobalStates.wifiConnected ? Colors.onPrimary : Colors.foreground }
-                                ColumnLayout {
-                                    spacing: 2
-                                    Text { text: "Internet"; font.pixelSize: 13; font.bold: true; color: GlobalStates.wifiConnected ? Colors.onPrimary : Colors.foreground; font.family: Config.fontFamily }
-                                    Text { text: GlobalStates.wifiName; font.pixelSize: 11; color: Qt.alpha(GlobalStates.wifiConnected ? Colors.onPrimary : Colors.foreground, 0.8); font.family: Config.fontFamily }
-                                }
-                            }
+                            Text { anchors.centerIn: parent; text: GlobalStates.wifiConnected ? "󰖩" : "󰖪"; font.pixelSize: 20; color: GlobalStates.wifiConnected ? Colors.onPrimaryColor : Colors.foreground }
                         }
                         
-                        // Bluetooth
-                        StyledRect {
+                        // Bluetooth Toggle
+                        Rectangle {
+                            Layout.fillHeight: true
                             Layout.fillWidth: true
-                            Layout.preferredHeight: 64
-                            Layout.preferredWidth: 140
+                            radius: height / 2
                             color: GlobalStates.bluetoothConnected ? Colors.primary : Qt.alpha(Colors.surfaceBorder, 0.3)
                             
                             MouseArea {
@@ -219,40 +272,29 @@ PanelWindow {
                                 cursorShape: Qt.PointingHandCursor
                                 onClicked: Quickshell.execDetached(["blueman-manager"])
                             }
+                            Text { anchors.centerIn: parent; text: "󰂯"; font.pixelSize: 20; color: GlobalStates.bluetoothConnected ? Colors.onPrimaryColor : Colors.foreground }
+                        }
+                        
+                        // Night Light Toggle
+                        Rectangle {
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                            radius: height / 2
+                            color: GlobalStates.nightLightOn ? Colors.primary : Qt.alpha(Colors.surfaceBorder, 0.3)
                             
-                            RowLayout {
+                            MouseArea {
                                 anchors.fill: parent
-                                anchors.margins: 12
-                                spacing: 12
-                                
-                                Text { text: "󰂯"; font.pixelSize: 24; color: GlobalStates.bluetoothConnected ? Colors.onPrimary : Colors.foreground }
-                                ColumnLayout {
-                                    spacing: 2
-                                    Text { text: "Bluetooth"; font.pixelSize: 13; font.bold: true; color: GlobalStates.bluetoothConnected ? Colors.onPrimary : Colors.foreground; font.family: Config.fontFamily }
-                                    Text { text: GlobalStates.bluetoothName; font.pixelSize: 11; color: Qt.alpha(GlobalStates.bluetoothConnected ? Colors.onPrimary : Colors.foreground, 0.8); font.family: Config.fontFamily; elide: Text.ElideRight; Layout.fillWidth: true }
-                                }
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: GlobalStates.nightLightOn = !GlobalStates.nightLightOn
                             }
+                            Text { anchors.centerIn: parent; text: "󰖔"; font.pixelSize: 20; color: GlobalStates.nightLightOn ? Colors.onPrimaryColor : Colors.foreground }
                         }
                         
-                        // Caffeine
-                        StyledRect {
-                            Layout.preferredHeight: 64
-                            Layout.preferredWidth: 64
-                            color: Qt.alpha(Colors.surfaceBorder, 0.3)
-                            
-                            Text { anchors.centerIn: parent; text: "󰅶"; font.pixelSize: 24; color: Colors.foreground }
-                        }
-                    }
-                    
-                    // Row 2
-                    RowLayout {
-                        Layout.fillWidth: true
-                        spacing: 12
-                        
-                        // Mic
-                        StyledRect {
-                            Layout.preferredHeight: 64
-                            Layout.preferredWidth: 64
+                        // Mic Toggle
+                        Rectangle {
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                            radius: height / 2
                             color: GlobalStates.micMuted ? Qt.alpha(Colors.surfaceBorder, 0.3) : Colors.primary
                             
                             MouseArea {
@@ -264,15 +306,14 @@ PanelWindow {
                                     GlobalStates.micMuted = micStatus.includes("MUTED");
                                 }
                             }
-                            
-                            Text { anchors.centerIn: parent; text: GlobalStates.micMuted ? "󰍭" : "󰍬"; font.pixelSize: 24; color: GlobalStates.micMuted ? Colors.foreground : Colors.onPrimary }
+                            Text { anchors.centerIn: parent; text: GlobalStates.micMuted ? "󰍭" : "󰍬"; font.pixelSize: 20; color: GlobalStates.micMuted ? Colors.foreground : Colors.onPrimaryColor }
                         }
                         
-                        // Audio
-                        StyledRect {
+                        // Audio Toggle
+                        Rectangle {
+                            Layout.fillHeight: true
                             Layout.fillWidth: true
-                            Layout.preferredHeight: 64
-                            Layout.preferredWidth: 140
+                            radius: height / 2
                             color: GlobalStates.audioMuted ? Qt.alpha(Colors.surfaceBorder, 0.3) : Colors.primary
                             
                             MouseArea {
@@ -284,46 +325,7 @@ PanelWindow {
                                     GlobalStates.audioMuted = sinkStatus.includes("MUTED");
                                 }
                             }
-                            
-                            RowLayout {
-                                anchors.fill: parent
-                                anchors.margins: 12
-                                spacing: 12
-                                
-                                Text { text: GlobalStates.audioMuted ? "󰖁" : "󰕾"; font.pixelSize: 24; color: GlobalStates.audioMuted ? Colors.foreground : Colors.onPrimary }
-                                ColumnLayout {
-                                    spacing: 2
-                                    Text { text: "Audio output"; font.pixelSize: 13; font.bold: true; color: GlobalStates.audioMuted ? Colors.foreground : Colors.onPrimary; font.family: Config.fontFamily }
-                                    Text { text: GlobalStates.audioMuted ? "Muted" : "Unmuted"; font.pixelSize: 11; color: Qt.alpha(GlobalStates.audioMuted ? Colors.foreground : Colors.onPrimary, 0.8); font.family: Config.fontFamily }
-                                }
-                            }
-                        }
-                        
-                        // Night Light
-                        StyledRect {
-                            Layout.fillWidth: true
-                            Layout.preferredHeight: 64
-                            Layout.preferredWidth: 160
-                            color: GlobalStates.nightLightOn ? Colors.primary : Qt.alpha(Colors.surfaceBorder, 0.3)
-                            
-                            MouseArea {
-                                anchors.fill: parent
-                                cursorShape: Qt.PointingHandCursor
-                                onClicked: GlobalStates.nightLightOn = !GlobalStates.nightLightOn
-                            }
-                            
-                            RowLayout {
-                                anchors.fill: parent
-                                anchors.margins: 12
-                                spacing: 12
-                                
-                                Text { text: "󰖔"; font.pixelSize: 24; color: GlobalStates.nightLightOn ? Colors.onPrimary : Colors.foreground }
-                                ColumnLayout {
-                                    spacing: 2
-                                    Text { text: "Night Light"; font.pixelSize: 13; font.bold: true; color: GlobalStates.nightLightOn ? Colors.onPrimary : Colors.foreground; font.family: Config.fontFamily }
-                                    Text { text: GlobalStates.nightLightOn ? "Active" : "Auto, Inactive"; font.pixelSize: 11; color: Qt.alpha(GlobalStates.nightLightOn ? Colors.onPrimary : Colors.foreground, 0.6); font.family: Config.fontFamily }
-                                }
-                            }
+                            Text { anchors.centerIn: parent; text: GlobalStates.audioMuted ? "󰖁" : "󰕾"; font.pixelSize: 20; color: GlobalStates.audioMuted ? Colors.foreground : Colors.onPrimaryColor }
                         }
                     }
                 }
@@ -333,6 +335,7 @@ PanelWindow {
                     Layout.fillWidth: true
                     Layout.fillHeight: true // takes remaining space
                     color: Qt.alpha(Colors.surfaceBorder, 0.1)
+                    radius: Config.borderRadius
                     
                     ColumnLayout {
                         anchors.fill: parent
@@ -393,132 +396,73 @@ PanelWindow {
                     }
                 }
                 
-                // --- Bottom Pomodoro Panel ---
+                // --- Calendar (end-4 style) ---
                 StyledRect {
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 320
+                    Layout.preferredHeight: 300
                     color: Qt.alpha(Colors.surfaceBorder, 0.1)
+                    radius: Config.borderRadius
                     
                     ColumnLayout {
                         anchors.fill: parent
                         anchors.margins: 16
-                        spacing: 16
+                        spacing: 12
                         
-                        // Tabs
+                        // Calendar Header
                         RowLayout {
                             Layout.fillWidth: true
-                            Text { text: ""; color: Colors.foreground; font.pixelSize: 14 }
+                            
+                            Text {
+                                text: {
+                                    let d = new Date();
+                                    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                                    return months[d.getMonth()] + " " + d.getFullYear();
+                                }
+                                font.pixelSize: 18
+                                font.bold: true
+                                color: Colors.foreground
+                                font.family: Config.fontFamily
+                            }
+                            
                             Item { Layout.fillWidth: true }
-                            Text { text: "󰄉 Pomodoro"; color: Colors.primary; font.pixelSize: 14; font.family: Config.fontFamily; font.bold: true }
-                            Item { Layout.fillWidth: true }
-                            Text { text: "󱎫 Stopwatch"; color: Qt.alpha(Colors.foreground, 0.6); font.pixelSize: 14; font.family: Config.fontFamily }
-                            Item { Layout.fillWidth: true }
+                            
+                            Row {
+                                spacing: 8
+                                Rectangle { width: 32; height: 32; radius: 16; color: Qt.alpha(Colors.surfaceBorder, 0.4); Text { anchors.centerIn: parent; text: ""; color: Colors.foreground } }
+                                Rectangle { width: 32; height: 32; radius: 16; color: Qt.alpha(Colors.surfaceBorder, 0.4); Text { anchors.centerIn: parent; text: ""; color: Colors.foreground } }
+                            }
                         }
                         
-                        // Separator with active tab indicator
-                        Item {
-                            Layout.fillWidth: true
-                            Layout.preferredHeight: 2
-                            Rectangle { width: parent.width; height: 1; color: Qt.alpha(Colors.surfaceBorder, 0.5); anchors.bottom: parent.bottom }
-                            Rectangle { width: 100; height: 2; color: Colors.primary; anchors.bottom: parent.bottom; x: 120 }
-                        }
-                        
-                        RowLayout {
+                        // Calendar Grid Mockup
+                        GridLayout {
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-                            spacing: 24
+                            columns: 7
+                            columnSpacing: 8
+                            rowSpacing: 8
                             
-                            // Left Menu
-                            ColumnLayout {
-                                Layout.preferredWidth: 60
-                                Layout.alignment: Qt.AlignVCenter
-                                spacing: 16
-                                
-                                Column {
-                                    spacing: 4; anchors.horizontalCenter: parent.horizontalCenter
-                                    Text { text: "󰃭"; font.pixelSize: 20; color: Colors.foreground; anchors.horizontalCenter: parent.horizontalCenter }
-                                    Text { text: "Calendar"; font.pixelSize: 11; font.family: Config.fontFamily; color: Colors.foreground; anchors.horizontalCenter: parent.horizontalCenter }
-                                }
-                                
-                                Column {
-                                    spacing: 4; anchors.horizontalCenter: parent.horizontalCenter
-                                    Text { text: "󰄬"; font.pixelSize: 20; color: Colors.foreground; anchors.horizontalCenter: parent.horizontalCenter }
-                                    Text { text: "To Do"; font.pixelSize: 11; font.family: Config.fontFamily; color: Colors.foreground; anchors.horizontalCenter: parent.horizontalCenter }
-                                }
-                                
-                                Rectangle {
-                                    width: 64; height: 50; radius: 25; color: Qt.alpha(Colors.surfaceBorder, 0.4); anchors.horizontalCenter: parent.horizontalCenter
-                                    Column {
-                                        anchors.centerIn: parent
-                                        spacing: 4
-                                        Text { text: "󱎫"; font.pixelSize: 20; color: Colors.foreground; anchors.horizontalCenter: parent.horizontalCenter }
-                                        Text { text: "Timer"; font.pixelSize: 11; font.family: Config.fontFamily; color: Colors.foreground; anchors.horizontalCenter: parent.horizontalCenter }
-                                    }
-                                }
+                            Repeater {
+                                model: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
+                                Text { text: modelData; color: Qt.alpha(Colors.foreground, 0.5); font.pixelSize: 12; font.family: Config.fontFamily; horizontalAlignment: Text.AlignHCenter; Layout.fillWidth: true }
                             }
                             
-                            // Pomodoro Timer Circle
-                            Item {
-                                Layout.fillWidth: true
-                                Layout.fillHeight: true
-                                
+                            Repeater {
+                                model: 35
                                 Rectangle {
-                                    anchors.centerIn: parent
-                                    width: 160
-                                    height: 160
-                                    radius: 80
-                                    color: "transparent"
-                                    border.color: Colors.primary
-                                    border.width: 6
+                                    Layout.fillWidth: true
+                                    Layout.fillHeight: true
+                                    color: (index === 15) ? Colors.primary : "transparent"
+                                    radius: height / 2
                                     
-                                    Column {
+                                    Text {
                                         anchors.centerIn: parent
-                                        spacing: 4
-                                        Text { 
-                                            text: {
-                                                let m = Math.floor(GlobalStates.pomodoroTimeRemaining / 60);
-                                                let s = GlobalStates.pomodoroTimeRemaining % 60;
-                                                return (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
-                                            }
-                                            font.pixelSize: 40; font.family: Config.fontFamily; color: Colors.foreground; anchors.horizontalCenter: parent.horizontalCenter 
-                                        }
-                                        Text { text: "Focus"; font.pixelSize: 14; font.family: Config.fontFamily; color: Qt.alpha(Colors.foreground, 0.6); anchors.horizontalCenter: parent.horizontalCenter }
+                                        text: ((index % 30) + 1).toString()
+                                        color: (index === 15) ? Colors.surface : Colors.foreground
+                                        font.pixelSize: 14
+                                        font.family: Config.fontFamily
                                     }
                                 }
                             }
-                        }
-                        
-                        // Bottom Buttons
-                        RowLayout {
-                            Layout.fillWidth: true
-                            spacing: 16
-                            
-                            Item { Layout.fillWidth: true }
-                            
-                            Rectangle {
-                                width: 100; height: 36; radius: 18; color: Colors.primary
-                                MouseArea {
-                                    anchors.fill: parent
-                                    cursorShape: Qt.PointingHandCursor
-                                    onClicked: GlobalStates.pomodoroRunning = !GlobalStates.pomodoroRunning
-                                }
-                                Text { anchors.centerIn: parent; text: GlobalStates.pomodoroRunning ? "Pause" : "Start"; font.pixelSize: 14; font.family: Config.fontFamily; font.bold: true; color: Colors.surface }
-                            }
-                            
-                            Rectangle {
-                                width: 100; height: 36; radius: 18; color: "transparent"
-                                MouseArea {
-                                    anchors.fill: parent
-                                    cursorShape: Qt.PointingHandCursor
-                                    onClicked: {
-                                        GlobalStates.pomodoroRunning = false;
-                                        GlobalStates.pomodoroTimeRemaining = 25 * 60;
-                                    }
-                                }
-                                Text { anchors.centerIn: parent; text: "Reset"; font.pixelSize: 14; font.family: Config.fontFamily; color: Qt.alpha(Colors.foreground, 0.7) }
-                            }
-                            
-                            Item { Layout.fillWidth: true }
                         }
                     }
                 }

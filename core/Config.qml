@@ -7,11 +7,11 @@ QtObject {
     id: root
 
     property string barMode: "floating"
-    property int barMargin: 12
+    property int barMargin: 16
     property int dockIconSize: 48
-    property real borderRadius: 16
+    property real borderRadius: 24
     property string theme: "material-you"
-    property string fontFamily: "Inter"
+    property string fontFamily: "Google Sans, Roboto, Inter"
     property string wallpaperPath: ""
     property bool widgetOutline: false
     property bool showBattery: true

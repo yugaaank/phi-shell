@@ -14,32 +14,35 @@ Row {
 
         Rectangle {
             // Quickshell models expose the object as modelData, or the properties directly.
-            // We use a small trick to safely get the workspace ID.
             property int wsId: typeof modelData !== 'undefined' ? modelData.id : id
-            
-            // Check if this workspace is the currently focused one
             property bool isActive: Hyprland.focusedWorkspace && Hyprland.focusedWorkspace.id === wsId
             
-            width: isActive ? 24 : 12
-            height: 12
-            radius: 6
+            width: isActive ? 24 : 8
+            height: isActive ? 24 : 8
+            radius: width / 2
+            anchors.verticalCenter: parent.verticalCenter
             
             color: isActive ? Colors.primary : Colors.surfaceBorder
             
-            Behavior on width {
-                NumberAnimation { duration: 250; easing.type: Easing.OutExpo }
-            }
+            Behavior on width { NumberAnimation { duration: 200 } }
+            Behavior on height { NumberAnimation { duration: 200 } }
+            Behavior on color { ColorAnimation { duration: 200 } }
             
-            Behavior on color {
-                ColorAnimation { duration: 250 }
+            // Icon for active workspace
+            Text {
+                text: "✦"
+                anchors.centerIn: parent
+                color: Colors.surface
+                font.pixelSize: 12
+                opacity: parent.isActive ? 1 : 0
+                Behavior on opacity { NumberAnimation { duration: 200 } }
             }
             
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
-                    // Try the Lua dispatch mode from Noctalia, fallback to standard
-                    Quickshell.execDetached(["bash", "-c", "hyprctl dispatch workspace " + wsId + " || hyprctl dispatch \"hl.dsp.focus({ workspace = " + wsId + " })\""])
+                    Quickshell.execDetached(["bash", "-c", "hyprctl dispatch workspace " + wsId])
                 }
             }
         }

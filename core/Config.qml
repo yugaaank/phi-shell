@@ -9,10 +9,11 @@ QtObject {
     property string barMode: "floating"
     property int barMargin: 12
     property int dockIconSize: 48
-    property int borderRadius: 16
+    property real borderRadius: 16
     property string theme: "material-you"
     property string fontFamily: "Inter"
     property string wallpaperPath: ""
+    property bool widgetOutline: false
     property bool showBattery: true
     property string clockFormat: "hh:mm A"
 
@@ -30,6 +31,7 @@ QtObject {
                 if (data.appearance.borderRadius !== undefined) root.borderRadius = data.appearance.borderRadius;
                 if (data.appearance.theme !== undefined) root.theme = data.appearance.theme;
                 if (data.appearance.fontFamily !== undefined) root.fontFamily = data.appearance.fontFamily;
+                if (data.appearance.widgetOutline !== undefined) root.widgetOutline = data.appearance.widgetOutline;
                 if (data.appearance.wallpaperPath !== undefined && data.appearance.wallpaperPath !== root.wallpaperPath) {
                     root.wallpaperPath = data.appearance.wallpaperPath;
                     Quickshell.execDetached(["bash", "-c", Quickshell.env("HOME") + "/.config/myshell/scripts/extract_colors.sh " + root.wallpaperPath]);

@@ -5,10 +5,16 @@ Rectangle {
     id: root
     
     color: Colors.surface
-    border.color: Colors.surfaceBorder
-    border.width: 1
     radius: Config.borderRadius
     
-    Behavior on color { ColorAnimation { duration: 350 } }
-    Behavior on border.color { ColorAnimation { duration: 350 } }
+    border.color: Config.widgetOutline ? Qt.alpha(Colors.surfaceBorder, 0.8) : "transparent"
+    border.width: Config.widgetOutline ? 1 : 0
+    
+    Behavior on color {
+        ColorAnimation { duration: 300; easing.type: Easing.OutCubic }
+    }
+    
+    Behavior on border.color {
+        ColorAnimation { duration: 300; easing.type: Easing.OutCubic }
+    }
 }

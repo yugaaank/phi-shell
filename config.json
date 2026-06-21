@@ -5,10 +5,11 @@
     "dockIconSize": 30
   },
   "appearance": {
-    "borderRadius": 23,
+    "borderRadius": 32,
     "theme": "material-you",
     "fontFamily": "Inter",
-    "wallpaperPath": "/home/yugaaank/Pictures/Wallpapers/a_painting_of_a_man_with_a_face_on_his_head.png"
+    "wallpaperPath": "/home/yugaaank/Pictures/Wallpapers/a_mountain_with_a_lake_in_the_background.jpg",
+    "widgetOutline": false
   },
   "widgets": {
     "showBattery": true,

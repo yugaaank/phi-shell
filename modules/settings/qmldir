@@ -1,1 +1,8 @@
 SettingsApp 1.0 SettingsApp.qml
+SettingCard 1.0 SettingCard.qml
+SettingRowToggle 1.0 SettingRowToggle.qml
+SettingRowSlider 1.0 SettingRowSlider.qml
+SettingRowDropdown 1.0 SettingRowDropdown.qml
+SettingsGeneralPage 1.0 SettingsGeneralPage.qml
+SettingsColorPage 1.0 SettingsColorPage.qml
+SettingsBarPage 1.0 SettingsBarPage.qml

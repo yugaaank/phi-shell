@@ -28,81 +28,104 @@ PanelWindow {
     color: Config.barMode === "attached" ? Colors.surface : "transparent"
     implicitHeight: 36
     
-    RowLayout {
+    Item {
         anchors.fill: parent
         anchors.leftMargin: 12
         anchors.rightMargin: 12
-        spacing: 16
         
         // --- Left Section ---
-        RowLayout {
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+        Item {
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+            height: leftPill.height
+            width: leftPill.width
             
-            // Active Window
             StyledRect {
-                Layout.preferredHeight: 32
-                Layout.preferredWidth: activeWindow.width + 24
+                id: leftPill
+                anchors.centerIn: parent
+                height: 32
+                width: leftLayout.implicitWidth + 24
                 color: Qt.alpha(Colors.surface, Config.barMode === "attached" ? 0.3 : 0.6)
                 radius: Config.barMode === "attached" ? 16 : Config.borderRadius
-                
-                ActiveWindowWidget {
-                    id: activeWindow
-                    anchors.centerIn: parent
-                }
-            }
-        }
-        
-        // Spacer
-        Item { Layout.fillWidth: true }
-        
-        // --- Center Section ---
-        RowLayout {
-            Layout.alignment: Qt.AlignCenter
-            
-            // Workspaces
-            StyledRect {
-                Layout.preferredHeight: 32
-                Layout.preferredWidth: wsItem.width + 24
-                color: Qt.alpha(Colors.surface, Config.barMode === "attached" ? 0.3 : 0.6)
-                radius: Config.barMode === "attached" ? 16 : Config.borderRadius
-                
-                WorkspacesWidget {
-                    id: wsItem
-                    anchors.centerIn: parent
-                }
-            }
-        }
-        
-        // Spacer
-        Item { Layout.fillWidth: true }
-        
-        // --- Right Section ---
-        RowLayout {
-            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-            spacing: 8
-            
-            // Audio, Battery, Clock & Settings
-            StyledRect {
-                Layout.preferredHeight: 32
-                Layout.preferredWidth: rightStuff.width + 32
-                color: Qt.alpha(Colors.surface, Config.barMode === "attached" ? 0.3 : 0.6)
-                radius: Config.barMode === "attached" ? 16 : Config.borderRadius
+                visible: Config.barLeft.length > 0
                 
                 Row {
-                    id: rightStuff
+                    id: leftLayout
                     anchors.centerIn: parent
                     spacing: 16
-                    
-                    AudioWidget {
-                        anchors.verticalCenter: parent.verticalCenter
+                    Repeater {
+                        model: Config.barLeft
+                        Loader {
+                            source: "../../components/" + modelData + ".qml"
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
                     }
-                    
-                    BatteryWidget {
-                        anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+        }
+        
+        // --- Center Section ---
+        Item {
+            anchors.centerIn: parent
+            height: centerPill.height
+            width: centerPill.width
+            
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: GlobalStates.dashboardOpen = !GlobalStates.dashboardOpen
+            }
+            
+            StyledRect {
+                id: centerPill
+                anchors.centerIn: parent
+                height: 32
+                width: centerLayout.implicitWidth + 24
+                color: Qt.alpha(Colors.surface, Config.barMode === "attached" ? 0.3 : 0.6)
+                radius: Config.barMode === "attached" ? 16 : Config.borderRadius
+                visible: Config.barCenter.length > 0
+                
+                Row {
+                    id: centerLayout
+                    anchors.centerIn: parent
+                    spacing: 16
+                    Repeater {
+                        model: Config.barCenter
+                        Loader {
+                            source: "../../components/" + modelData + ".qml"
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
                     }
-                    
-                    ClockWidget {
-                        anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+        }
+        
+        // --- Right Section ---
+        Item {
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            height: rightPill.height
+            width: rightPill.width
+            
+            StyledRect {
+                id: rightPill
+                anchors.centerIn: parent
+                height: 32
+                width: rightLayout.implicitWidth + 24
+                color: Qt.alpha(Colors.surface, Config.barMode === "attached" ? 0.3 : 0.6)
+                radius: Config.barMode === "attached" ? 16 : Config.borderRadius
+                visible: Config.barRight.length > 0
+                
+                Row {
+                    id: rightLayout
+                    anchors.centerIn: parent
+                    spacing: 16
+                    Repeater {
+                        model: Config.barRight
+                        Loader {
+                            source: "../../components/" + modelData + ".qml"
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
                     }
                     
                     // Settings Button

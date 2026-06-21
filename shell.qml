@@ -16,4 +16,5 @@ ShellRoot {
     Dock {}
     AppLauncher {}
     SettingsApp {}
+    Dashboard {}
 }

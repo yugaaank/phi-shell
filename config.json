@@ -1,15 +1,26 @@
 {
   "layout": {
-    "barMode": "attached",
+    "barMode": "floating",
     "barMargin": 5,
-    "dockIconSize": 30
+    "dockIconSize": 30,
+    "barLeft": [
+      "ActiveWindowWidget",
+      "WorkspacesWidget"
+    ],
+    "barCenter": [
+      "ClockWidget"
+    ],
+    "barRight": [
+      "AudioWidget",
+      "BatteryWidget"
+    ]
   },
   "appearance": {
-    "borderRadius": 32,
+    "borderRadius": 10,
     "theme": "material-you",
     "fontFamily": "Inter",
     "wallpaperPath": "/home/yugaaank/Pictures/Wallpapers/a_mountain_with_a_lake_in_the_background.jpg",
-    "widgetOutline": false
+    "widgetOutline": true
   },
   "widgets": {
     "showBattery": true,

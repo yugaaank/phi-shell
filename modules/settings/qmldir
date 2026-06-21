@@ -6,3 +6,4 @@ SettingRowDropdown 1.0 SettingRowDropdown.qml
 SettingsGeneralPage 1.0 SettingsGeneralPage.qml
 SettingsColorPage 1.0 SettingsColorPage.qml
 SettingsBarPage 1.0 SettingsBarPage.qml
+SettingRowTextInput 1.0 SettingRowTextInput.qml

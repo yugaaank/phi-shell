@@ -56,11 +56,46 @@ Item {
                 }
             }
             
-            Rectangle {
-                Layout.fillWidth: true
-                height: 1
-                color: Qt.alpha(Colors.surfaceBorder, 0.5)
+            Rectangle { Layout.fillWidth: true; height: 1; color: Qt.alpha(Colors.surfaceBorder, 0.5) }
+            
+            SettingRowTextInput {
+                title: "Left Widgets"
+                description: "Comma-separated list (e.g. ActiveWindowWidget, WorkspacesWidget)"
+                textValue: Config.barLeft.join(", ")
+                onEdited: function(newText) {
+                    let arr = newText.split(",").map(s => s.trim()).filter(s => s !== "");
+                    let jsonStr = JSON.stringify(arr);
+                    Quickshell.execDetached(["bash", "-c", Quickshell.env("HOME") + "/.config/myshell/scripts/update_config.sh .layout.barLeft '" + jsonStr + "'"])
+                }
             }
+            
+            Rectangle { Layout.fillWidth: true; height: 1; color: Qt.alpha(Colors.surfaceBorder, 0.5) }
+            
+            SettingRowTextInput {
+                title: "Center Widgets"
+                description: "Comma-separated list (e.g. WorkspacesWidget)"
+                textValue: Config.barCenter.join(", ")
+                onEdited: function(newText) {
+                    let arr = newText.split(",").map(s => s.trim()).filter(s => s !== "");
+                    let jsonStr = JSON.stringify(arr);
+                    Quickshell.execDetached(["bash", "-c", Quickshell.env("HOME") + "/.config/myshell/scripts/update_config.sh .layout.barCenter '" + jsonStr + "'"])
+                }
+            }
+            
+            Rectangle { Layout.fillWidth: true; height: 1; color: Qt.alpha(Colors.surfaceBorder, 0.5) }
+            
+            SettingRowTextInput {
+                title: "Right Widgets"
+                description: "Comma-separated list (e.g. AudioWidget, BatteryWidget, ClockWidget)"
+                textValue: Config.barRight.join(", ")
+                onEdited: function(newText) {
+                    let arr = newText.split(",").map(s => s.trim()).filter(s => s !== "");
+                    let jsonStr = JSON.stringify(arr);
+                    Quickshell.execDetached(["bash", "-c", Quickshell.env("HOME") + "/.config/myshell/scripts/update_config.sh .layout.barRight '" + jsonStr + "'"])
+                }
+            }
+            
+            Rectangle { Layout.fillWidth: true; height: 1; color: Qt.alpha(Colors.surfaceBorder, 0.5) }
             
             SettingRowToggle {
                 title: "Widgets Outline"

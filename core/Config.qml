@@ -17,6 +17,10 @@ QtObject {
     property bool showBattery: true
     property string clockFormat: "hh:mm A"
 
+    property var barLeft: ["ActiveWindowWidget"]
+    property var barCenter: ["WorkspacesWidget"]
+    property var barRight: ["AudioWidget", "BatteryWidget", "ClockWidget"]
+
     function loadData() {
         try {
             let content = fileView.text();
@@ -26,6 +30,9 @@ QtObject {
                 if (data.layout.barMode !== undefined) root.barMode = data.layout.barMode;
                 if (data.layout.barMargin !== undefined) root.barMargin = data.layout.barMargin;
                 if (data.layout.dockIconSize !== undefined) root.dockIconSize = data.layout.dockIconSize;
+                if (data.layout.barLeft !== undefined) root.barLeft = data.layout.barLeft;
+                if (data.layout.barCenter !== undefined) root.barCenter = data.layout.barCenter;
+                if (data.layout.barRight !== undefined) root.barRight = data.layout.barRight;
             }
             if (data.appearance) {
                 if (data.appearance.borderRadius !== undefined) root.borderRadius = data.appearance.borderRadius;

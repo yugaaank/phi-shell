@@ -1,0 +1,431 @@
+[
+  {"name": "Qt Assistant\n", "exec": "assistant6\n", "icon": "assistant\n"}
+,
+  {"name": "Avahi Zeroconf Browser\n", "exec": "/usr/bin/avahi-discover\n", "icon": "network-wired\n"}
+,
+  {"name": "Azahar\n", "exec": "azahar\n", "icon": "azahar\n"}
+,
+  {"name": "Gradia\n", "exec": "gradia\n", "icon": "be.alexandervanhee.gradia\n"}
+,
+  {"name": "Bluetooth Adapters\n", "exec": "blueman-adapters\n", "icon": "blueman-device\n"}
+,
+  {"name": "Bluetooth Manager\n", "exec": "blueman-manager\n", "icon": "blueman\n"}
+,
+  {"name": "Brave\n", "exec": "brave\n", "icon": "brave-desktop\n"}
+,
+  {"name": "Breeze Widget Style\n", "exec": "kcmshell6 breezestyleconfig\n", "icon": "preferences-desktop-theme\n"}
+,
+  {"name": "Avahi SSH Server Browser\n", "exec": "/usr/bin/bssh\n", "icon": "network-wired\n"}
+,
+  {"name": "btop++\n", "exec": "btop\n", "icon": "btop\n"}
+,
+  {"name": "Avahi VNC Server Browser\n", "exec": "/usr/bin/bvnc\n", "icon": "network-wired\n"}
+,
+  {"name": "CMake\n", "exec": "cmake-gui\n", "icon": "CMakeSetup\n"}
+,
+  {"name": "Code - OSS\n", "exec": "code-oss\n", "icon": "com.visualstudio.code.oss\n"}
+,
+  {"name": "Code - OSS - URL Handler\n", "exec": "code-oss --open-url\n", "icon": "com.visualstudio.code.oss\n"}
+,
+  {"name": "Code - OSS - URL Handler\n", "exec": "code-oss --open-url\n", "icon": "com.visualstudio.code.oss\n"}
+,
+  {"name": "Easy Effects\n", "exec": "easyeffects\n", "icon": "com.github.wwmm.easyeffects\n"}
+,
+  {"name": "Extension Manager\n", "exec": "extension-manager\n", "icon": "com.mattjakeman.ExtensionManager\n"}
+,
+  {"name": "Darkly: Widget Style\n", "exec": "kcmshell6 darklystyleconfig\n", "icon": "preferences-desktop-theme\n"}
+,
+  {"name": "Qt Widgets Designer\n", "exec": "designer6\n", "icon": "designer\n"}
+,
+  {"name": "Zed\n", "exec": "zeditor\n", "icon": "zed\n"}
+,
+  {"name": "elio\n", "exec": "elio\n", "icon": "elio\n"}
+,
+  {"name": "Firefox\n", "exec": "/usr/lib/firefox/firefox\n", "icon": "firefox\n"}
+,
+  {"name": "Access Prompt\n", "exec": "/usr/lib/gcr-prompter\n", "icon": "security-medium\n"}
+,
+  {"name": "View file\n", "exec": "/usr/bin/gcr-viewer\n", "icon": "\n"}
+,
+  {"name": "Geoclue Demo agent\n", "exec": "/usr/lib/geoclue-2.0/demos/agent\n", "icon": "mark-location-symbolic\n"}
+,
+  {"name": "Where am I?\n", "exec": "/usr/lib/geoclue-2.0/demos/where-am-i\n", "icon": "mark-location-symbolic\n"}
+,
+  {"name": "Google Maps\n", "exec": "kde-geo-uri-handler --coordinate-template https://www.google.com/maps/@<LAT>,<LON>,<Z>z --query-template https://www.google.com/maps/search/<Q> --fallback https://www.google.com/maps/\n", "icon": "map-globe\n"}
+,
+  {"name": "HyprMod\n", "exec": "hyprmod\n", "icon": "preferences-desktop-wallpaper\n"}
+,
+  {"name": "OpenJDK Java 26 Runtime\n", "exec": "/usr/lib/jvm/java-26-openjdk/bin/java -jar\n", "icon": "java26-openjdk\n"}
+,
+  {"name": "OpenJDK Java 26 Console\n", "exec": "/usr/lib/jvm/java-26-openjdk/bin/jconsole\n", "icon": "java26-openjdk\n"}
+,
+  {"name": "OpenJDK Java 26 Shell\n", "exec": "/usr/lib/jvm/java-26-openjdk/bin/jshell\n", "icon": "java26-openjdk\n"}
+,
+  {"name": "About this System\n", "exec": "systemsettings kcm_about-distro\n", "icon": "ktip\n"}
+,
+  {"name": "Animations\n", "exec": "systemsettings kcm_animations\n", "icon": "preferences-desktop-animations\n"}
+,
+  {"name": "Animations\n", "exec": "systemsettings kcm_animations_x11\n", "icon": "preferences-desktop-animations\n"}
+,
+  {"name": "Application Permissions\n", "exec": "systemsettings kcm_app-permissions\n", "icon": "preferences-security\n"}
+,
+  {"name": "Autostart\n", "exec": "systemsettings kcm_autostart\n", "icon": "system-run\n"}
+,
+  {"name": "Bluetooth\n", "exec": "systemsettings kcm_bluetooth\n", "icon": "preferences-system-bluetooth\n"}
+,
+  {"name": "Breeze Window Decoration\n", "exec": "kcmshell6 kcm_breezedecoration\n", "icon": "preferences-system-windows\n"}
+,
+  {"name": "Cellular Network\n", "exec": "systemsettings kcm_cellular_network\n", "icon": "smartphone\n"}
+,
+  {"name": "Colors\n", "exec": "systemsettings kcm_colors\n", "icon": "preferences-desktop-color\n"}
+,
+  {"name": "Default Applications\n", "exec": "systemsettings kcm_componentchooser\n", "icon": "preferences-desktop-default-applications\n"}
+,
+  {"name": "Pointers\n", "exec": "systemsettings kcm_cursortheme\n", "icon": "preferences-desktop-cursors\n"}
+,
+  {"name": "Darkly: Window Decoration\n", "exec": "kcmshell6 kcm_darklydecoration\n", "icon": "preferences-system-windows\n"}
+,
+  {"name": "Plasma Style\n", "exec": "systemsettings kcm_desktoptheme\n", "icon": "preferences-desktop-plasma-theme\n"}
+,
+  {"name": "User Feedback\n", "exec": "systemsettings kcm_feedback\n", "icon": "preferences-desktop-feedback\n"}
+,
+  {"name": "File Associations\n", "exec": "systemsettings kcm_filetypes\n", "icon": "preferences-desktop-filetype-association\n"}
+,
+  {"name": "Font Management\n", "exec": "systemsettings kcm_fontinst\n", "icon": "preferences-desktop-font-installer\n"}
+,
+  {"name": "Fonts\n", "exec": "systemsettings kcm_fonts\n", "icon": "preferences-desktop-font\n"}
+,
+  {"name": "Icons\n", "exec": "systemsettings kcm_icons\n", "icon": "preferences-desktop-icons\n"}
+,
+  {"name": "Online Accounts\n", "exec": "systemsettings kcm_kaccounts\n", "icon": "preferences-online-accounts\n"}
+,
+  {"name": "Gamma\n", "exec": "systemsettings kcm_kgamma\n", "icon": "preferences-desktop-display-color\n"}
+,
+  {"name": "Remote Desktop\n", "exec": "systemsettings kcm_krdpserver\n", "icon": "preferences-system-network-remote\n"}
+,
+  {"name": "Window Decorations\n", "exec": "systemsettings kcm_kwindecoration\n", "icon": "preferences-desktop-theme-windowdecorations\n"}
+,
+  {"name": "Window Decorations\n", "exec": "systemsettings kcm_kwindecoration_x11\n", "icon": "preferences-desktop-theme-windowdecorations\n"}
+,
+  {"name": "Desktop Effects\n", "exec": "systemsettings kcm_kwin_effects\n", "icon": "preferences-desktop-effects\n"}
+,
+  {"name": "Desktop Effects\n", "exec": "systemsettings kcm_kwin_effects_x11\n", "icon": "preferences-desktop-effects\n"}
+,
+  {"name": "Window Behavior\n", "exec": "systemsettings kcm_kwinoptions\n", "icon": "preferences-system-windows-actions\n"}
+,
+  {"name": "Window Behavior\n", "exec": "systemsettings kcm_kwinoptions_x11\n", "icon": "preferences-system-windows-actions\n"}
+,
+  {"name": "Window Rules\n", "exec": "systemsettings kcm_kwinrules\n", "icon": "preferences-system-windows-actions\n"}
+,
+  {"name": "Window Rules\n", "exec": "systemsettings kcm_kwinrules_x11\n", "icon": "preferences-system-windows-actions\n"}
+,
+  {"name": "KWin Scripts\n", "exec": "systemsettings kcm_kwin_scripts\n", "icon": "preferences-system-windows-actions\n"}
+,
+  {"name": "KWin Scripts\n", "exec": "systemsettings kcm_kwin_scripts_x11\n", "icon": "preferences-system-windows-actions\n"}
+,
+  {"name": "Task Switcher\n", "exec": "systemsettings kcm_kwintabbox\n", "icon": "preferences-system-tabbox\n"}
+,
+  {"name": "Task Switcher\n", "exec": "systemsettings kcm_kwintabbox_x11\n", "icon": "preferences-system-tabbox\n"}
+,
+  {"name": "Virtual Desktops\n", "exec": "systemsettings kcm_kwin_virtualdesktops\n", "icon": "preferences-desktop-virtual\n"}
+,
+  {"name": "Virtual Desktops\n", "exec": "systemsettings kcm_kwin_virtualdesktops_x11\n", "icon": "preferences-desktop-virtual\n"}
+,
+  {"name": "Legacy X11 App Support\n", "exec": "systemsettings kcm_kwinxwayland\n", "icon": "xorg\n"}
+,
+  {"name": "Global Theme\n", "exec": "systemsettings kcm_lookandfeel\n", "icon": "preferences-desktop-theme-global\n"}
+,
+  {"name": "Hotspot\n", "exec": "systemsettings kcm_mobile_hotspot\n", "icon": "network-wireless-hotspot\n"}
+,
+  {"name": "Wi-Fi\n", "exec": "systemsettings kcm_mobile_wifi\n", "icon": "network-wireless-symbolic\n"}
+,
+  {"name": "Wired Network\n", "exec": "systemsettings kcm_mobile_wired\n", "icon": "network-wired-symbolic\n"}
+,
+  {"name": "Connection Preferences\n", "exec": "systemsettings kcm_netpref\n", "icon": "preferences-system-network-connection\n"}
+,
+  {"name": "Wi-Fi & Networking\n", "exec": "systemsettings kcm_networkmanagement\n", "icon": "preferences-system-network\n"}
+,
+  {"name": "Night Light\n", "exec": "systemsettings kcm_nightlight\n", "icon": "redshift-status-on\n"}
+,
+  {"name": "Day-Night Cycle\n", "exec": "systemsettings kcm_nighttime\n", "icon": "lighttable\n"}
+,
+  {"name": "Notifications\n", "exec": "systemsettings kcm_notifications\n", "icon": "preferences-desktop-notification-bell\n"}
+,
+  {"name": "Oxygen Window Decoration\n", "exec": "kcmshell6 kcm_oxygendecoration\n", "icon": "preferences-system-windows\n"}
+,
+  {"name": "Boot Splash Screen\n", "exec": "systemsettings kcm_plymouth\n", "icon": "preferences-desktop-display\n"}
+,
+  {"name": "Printers\n", "exec": "systemsettings kcm_printer_manager\n", "icon": "preferences-devices-printer\n"}
+,
+  {"name": "Proxy\n", "exec": "systemsettings kcm_proxy\n", "icon": "preferences-system-network-proxy\n"}
+,
+  {"name": "Region & Language\n", "exec": "systemsettings kcm_regionandlang\n", "icon": "preferences-desktop-locale\n"}
+,
+  {"name": "Screen Locking\n", "exec": "systemsettings kcm_screenlocker\n", "icon": "preferences-desktop-user-password\n"}
+,
+  {"name": "Login Screen (SDDM)\n", "exec": "systemsettings kcm_sddm\n", "icon": "preferences-system-login\n"}
+,
+  {"name": "System Sounds\n", "exec": "systemsettings kcm_soundtheme\n", "icon": "emblem-music-symbolic\n"}
+,
+  {"name": "Application Style\n", "exec": "systemsettings kcm_style\n", "icon": "preferences-desktop-theme-applications\n"}
+,
+  {"name": "Trash\n", "exec": "kcmshell6 kcm_trash\n", "icon": "user-trash\n"}
+,
+  {"name": "Software Update\n", "exec": "systemsettings kcm_updates\n", "icon": "system-software-update\n"}
+,
+  {"name": "Users\n", "exec": "systemsettings kcm_users\n", "icon": "preferences-system-users\n"}
+,
+  {"name": "Virtual Keyboard\n", "exec": "systemsettings kcm_virtualkeyboard\n", "icon": "input-keyboard-virtual\n"}
+,
+  {"name": "Wallpaper\n", "exec": "systemsettings kcm_wallpaper\n", "icon": "preferences-desktop-wallpaper\n"}
+,
+  {"name": "Web Search Keywords\n", "exec": "kcmshell6 kcm_webshortcuts\n", "icon": "preferences-web-browser-shortcuts\n"}
+,
+  {"name": "KDE System Settings\n", "exec": "systemsettings\n", "icon": "preferences-system\n"}
+,
+  {"name": "kitty\n", "exec": "kitty\n", "icon": "kitty\n"}
+,
+  {"name": "kitty URL Launcher\n", "exec": "kitty +open\n", "icon": "kitty\n"}
+,
+  {"name": "KTelnetService\n", "exec": "ktelnetservice5\n", "icon": "utilities-terminal\n"}
+,
+  {"name": "KTelnetService\n", "exec": "ktelnetservice6\n", "icon": "utilities-terminal\n"}
+,
+  {"name": "Kvantum Manager\n", "exec": "kvantummanager\n", "icon": "kvantum\n"}
+,
+  {"name": "Compositor\n", "exec": "systemsettings kwincompositing\n", "icon": "preferences-desktop\n"}
+,
+  {"name": "LibreOffice Base\n", "exec": "libreoffice --base\n", "icon": "libreoffice-base\n"}
+,
+  {"name": "LibreOffice Calc\n", "exec": "libreoffice --calc\n", "icon": "libreoffice-calc\n"}
+,
+  {"name": "LibreOffice Draw\n", "exec": "libreoffice --draw\n", "icon": "libreoffice-draw\n"}
+,
+  {"name": "LibreOffice Impress\n", "exec": "libreoffice --impress\n", "icon": "libreoffice-impress\n"}
+,
+  {"name": "LibreOffice Math\n", "exec": "libreoffice --math\n", "icon": "libreoffice-math\n"}
+,
+  {"name": "LibreOffice\n", "exec": "libreoffice\n", "icon": "libreoffice-startcenter\n"}
+,
+  {"name": "LibreOffice Writer\n", "exec": "libreoffice --writer\n", "icon": "libreoffice-writer\n"}
+,
+  {"name": "LibreOffice XSLT based filters\n", "exec": "libreoffice\n", "icon": "\n"}
+,
+  {"name": "Qt Linguist\n", "exec": "linguist6\n", "icon": "linguist\n"}
+,
+  {"name": "Hardware Locality lstopo\n", "exec": "lstopo\n", "icon": "hwloc\n"}
+,
+  {"name": "mpv Media Player\n", "exec": "mpv --player-operation-mode=pseudo-gui --\n", "icon": "mpv\n"}
+,
+  {"name": "Run Software\n", "exec": "nautilus-autorun-software\n", "icon": "application-x-executable\n"}
+,
+  {"name": "ncspot\n", "exec": "ncspot\n", "icon": "ncspot\n"}
+,
+  {"name": "NetworkManager Applet\n", "exec": "nm-applet\n", "icon": "nm-device-wireless\n"}
+,
+  {"name": "Advanced Network Configuration\n", "exec": "nm-connection-editor\n", "icon": "preferences-system-network\n"}
+,
+  {"name": "NVIDIA X Server Settings\n", "exec": "/usr/bin/nvidia-settings\n", "icon": "nvidia-settings\n"}
+,
+  {"name": "Neovim\n", "exec": "nvim\n", "icon": "nvim\n"}
+,
+  {"name": "nvtop\n", "exec": "nvtop\n", "icon": "nvtop\n"}
+,
+  {"name": "Displays Settings\n", "exec": "nwg-displays\n", "icon": "nwg-displays\n"}
+,
+  {"name": "GTK Settings\n", "exec": "nwg-look\n", "icon": "nwg-look\n"}
+,
+  {"name": "Obsidian\n", "exec": "obsidian\n", "icon": "obsidian\n"}
+,
+  {"name": "OpenStreetMap\n", "exec": "kde-geo-uri-handler --coordinate-template https://www.openstreetmap.org/#map=<Z>/<LAT>/<LON> --query-template https://www.openstreetmap.org/search?query=<Q> --fallback https://www.openstreetmap.org\n", "icon": "map-globe\n"}
+,
+  {"name": "Orca\n", "exec": "orca\n", "icon": "orca\n"}
+,
+  {"name": "FontForge\n", "exec": "fontforge\n", "icon": "org.fontforge.FontForge\n"}
+,
+  {"name": "Portal\n", "exec": "/usr/lib/xdg-desktop-portal-kde\n", "icon": "kde\n"}
+,
+  {"name": "Parental Controls\n", "exec": "malcontent-control\n", "icon": "org.freedesktop.MalcontentControl\n"}
+,
+  {"name": "Xwayland\n", "exec": "/usr/bin/Xwayland -decorate -displayfd 1\n", "icon": "\n"}
+,
+  {"name": "Disk Usage Analyzer\n", "exec": "baobab\n", "icon": "org.gnome.baobab\n"}
+,
+  {"name": "Audio Player\n", "exec": "org.gnome.Decibels\n", "icon": "org.gnome.Decibels\n"}
+,
+  {"name": "Web\n", "exec": "epiphany\n", "icon": "org.gnome.Epiphany\n"}
+,
+  {"name": "Document Viewer\n", "exec": "evince\n", "icon": "org.gnome.Evince\n"}
+,
+  {"name": "Print Preview\n", "exec": "evince-previewer\n", "icon": "document-print-preview\n"}
+,
+  {"name": "Image Viewer\n", "exec": "loupe\n", "icon": "org.gnome.Loupe\n"}
+,
+  {"name": "Files\n", "exec": "nautilus --new-window\n", "icon": "org.gnome.Nautilus\n"}
+,
+  {"name": "Document Viewer\n", "exec": "papers\n", "icon": "org.gnome.Papers\n"}
+,
+  {"name": "Print Preview\n", "exec": "papers-previewer\n", "icon": "document-print-preview\n"}
+,
+  {"name": "Video Player\n", "exec": "showtime --new-window\n", "icon": "org.gnome.Showtime\n"}
+,
+  {"name": "Document Scanner\n", "exec": "simple-scan\n", "icon": "org.gnome.SimpleScan\n"}
+,
+  {"name": "Camera\n", "exec": "snapshot\n", "icon": "org.gnome.Snapshot\n"}
+,
+  {"name": "Tecla\n", "exec": "tecla\n", "icon": "org.gnome.Tecla\n"}
+,
+  {"name": "Help\n", "exec": "yelp\n", "icon": "org.gnome.Yelp\n"}
+,
+  {"name": "Zenity\n", "exec": "zenity\n", "icon": "\n"}
+,
+  {"name": "Pinentry\n", "exec": "/usr/bin/pinentry-qt5\n", "icon": "pinentry\n"}
+,
+  {"name": "Pinentry\n", "exec": "/usr/bin/pinentry-qt\n", "icon": "pinentry\n"}
+,
+  {"name": "Bluetooth File Transfer\n", "exec": "bluedevil-sendfile -k\n", "icon": "preferences-system-bluetooth\n"}
+,
+  {"name": "Add Bluetooth Device\n", "exec": "bluedevil-wizard\n", "icon": "preferences-system-bluetooth\n"}
+,
+  {"name": "Configure Printer\n", "exec": "configure-printer\n", "icon": "printer\n"}
+,
+  {"name": "Discover\n", "exec": "plasma-discover\n", "icon": "plasmadiscover\n"}
+,
+  {"name": "Discover\n", "exec": "plasma-discover\n", "icon": "plasmadiscover\n"}
+,
+  {"name": "Discover\n", "exec": "/usr/lib/DiscoverNotifier --check-delay 20\n", "icon": "system-software-update\n"}
+,
+  {"name": "Discover\n", "exec": "plasma-discover\n", "icon": "plasmadiscover\n"}
+,
+  {"name": "Discover\n", "exec": "plasma-discover\n", "icon": "plasmadiscover\n"}
+,
+  {"name": "Dolphin\n", "exec": "dolphin\n", "icon": "org.kde.dolphin\n"}
+,
+  {"name": "Crashed Processes Viewer\n", "exec": "drkonqi-coredump-gui\n", "icon": "tools-report-bug\n"}
+,
+  {"name": "Dr Konqi\n", "exec": "/usr/lib/drkonqi\n", "icon": "tools-report-bug\n"}
+,
+  {"name": "KColorSchemeEditor\n", "exec": "kcolorschemeeditor\n", "icon": "preferences-desktop-color\n"}
+,
+  {"name": "KDialog\n", "exec": "kdialog\n", "icon": "system-run\n"}
+,
+  {"name": "File Type Editor\n", "exec": "keditfiletype\n", "icon": "preferences-desktop-filetype-association\n"}
+,
+  {"name": "KFontInst\n", "exec": "kfontinst\n", "icon": "preferences-desktop-font-installer\n"}
+,
+  {"name": "KFontView\n", "exec": "kfontview\n", "icon": "kfontview\n"}
+,
+  {"name": "Info Center\n", "exec": "kinfocenter\n", "icon": "hwinfo\n"}
+,
+  {"name": "KIO\n", "exec": "kiod6\n", "icon": "dialog-password\n"}
+,
+  {"name": "Klipper\n", "exec": "/usr/bin/false\n", "icon": "klipper\n"}
+,
+  {"name": "Menu Editor\n", "exec": "kmenuedit\n", "icon": "kmenuedit\n"}
+,
+  {"name": "KNewStuff Dialog\n", "exec": "knewstuff-dialog6\n", "icon": "get-hot-new-stuff\n"}
+,
+  {"name": "Night Time Service\n", "exec": "/usr/lib/knighttimed\n", "icon": "\n"}
+,
+  {"name": "KRdp\n", "exec": "/usr/bin/krdpserver\n", "icon": "krfb\n"}
+,
+  {"name": "KDE Wallet Service\n", "exec": "ksecretd\n", "icon": "kwalletmanager\n"}
+,
+  {"name": "SSH Credentials\n", "exec": "ksshaskpass\n", "icon": "dialog-password\n"}
+,
+  {"name": "KWin Kill Helper\n", "exec": "/usr/lib/kwin_killer_helper\n", "icon": "tools-report-bug\n"}
+,
+  {"name": "KWin Kill Helper\n", "exec": "/usr/lib/kwin_killer_helper_x11\n", "icon": "tools-report-bug\n"}
+,
+  {"name": "Plasma Browser Integration Host\n", "exec": "/usr/bin/plasma-browser-integration-host\n", "icon": "plasma-browser-integration\n"}
+,
+  {"name": "Plasma Session Save\n", "exec": "/usr/lib/plasma-fallback-session-save\n", "icon": "plasmashell\n"}
+,
+  {"name": "Plasma Print Queue Manager\n", "exec": "plasma-print-queue\n", "icon": "printer\n"}
+,
+  {"name": "Open System Settings\n", "exec": "plasma-open-settings\n", "icon": "systemsettings\n"}
+,
+  {"name": "Plasma\n", "exec": "/usr/bin/plasmashell\n", "icon": "plasma-symbolic\n"}
+,
+  {"name": "Plasma Windowed\n", "exec": "/usr/bin/plasmawindowed\n", "icon": "plasma\n"}
+,
+  {"name": "PolicyKit Authentication Agent\n", "exec": "/usr/lib/polkit-kde-authentication-agent-1\n", "icon": "dialog-password\n"}
+,
+  {"name": "Spectacle\n", "exec": "/usr/bin/spectacle\n", "icon": "spectacle\n"}
+,
+  {"name": "VPN Importer\n", "exec": "systemsettings kcm_networkmanagement --args VPN=%f\n", "icon": "network-vpn\n"}
+,
+  {"name": "Volume Control\n", "exec": "pavucontrol\n", "icon": "org.pulseaudio.pavucontrol\n"}
+,
+  {"name": "PulseAudio Volume Control\n", "exec": "pavucontrol-qt\n", "icon": "multimedia-volume-control\n"}
+,
+  {"name": "Qt D-Bus Viewer\n", "exec": "qdbusviewer6\n", "icon": "qdbusviewer\n"}
+,
+  {"name": "Qt5 Settings\n", "exec": "qt5ct\n", "icon": "preferences-desktop-theme\n"}
+,
+  {"name": "Qt6 Settings\n", "exec": "qt6ct\n", "icon": "preferences-desktop-theme\n"}
+,
+  {"name": "Qt V4L2 test Utility\n", "exec": "qv4l2\n", "icon": "qv4l2\n"}
+,
+  {"name": "Qt V4L2 video capture utility\n", "exec": "qvidcap\n", "icon": "qvidcap\n"}
+,
+  {"name": "SongRec\n", "exec": "songrec gui\n", "icon": "re.fossplant.songrec\n"}
+,
+  {"name": "Remote Viewer\n", "exec": "remote-viewer\n", "icon": "virt-viewer\n"}
+,
+  {"name": "Rofi\n", "exec": "rofi -show\n", "icon": "rofi\n"}
+,
+  {"name": "Rofi Theme Selector\n", "exec": "rofi-theme-selector\n", "icon": "rofi\n"}
+,
+  {"name": "Rygel\n", "exec": "rygel\n", "icon": "\n"}
+,
+  {"name": "Rygel Preferences\n", "exec": "rygel-preferences\n", "icon": "rygel\n"}
+,
+  {"name": "Satty\n", "exec": "satty -f\n", "icon": "satty\n"}
+,
+  {"name": "Account authentication\n", "exec": "/usr/bin/signon-ui\n", "icon": "\n"}
+,
+  {"name": "Spotify\n", "exec": "spotify --uri=%u\n", "icon": "spotify-client\n"}
+,
+  {"name": "Swappy\n", "exec": "swappy -f\n", "icon": "swappy\n"}
+,
+  {"name": "System Settings\n", "exec": "systemsettings\n", "icon": "preferences-system\n"}
+,
+  {"name": "User folders update\n", "exec": "xdg-user-dirs-gtk-update\n", "icon": "\n"}
+,
+  {"name": "uuctl\n", "exec": "uuctl\n", "icon": "applications-system\n"}
+,
+  {"name": "Ventoy\n", "exec": "ventoygui\n", "icon": "ventoy\n"}
+,
+  {"name": "Vesktop\n", "exec": "vesktop\n", "icon": "vesktop\n"}
+,
+  {"name": "Vim\n", "exec": "vim\n", "icon": "gvim\n"}
+,
+  {"name": "Virtual Machine Manager\n", "exec": "virt-manager\n", "icon": "virt-manager\n"}
+,
+  {"name": "vitetris\n", "exec": "tetris -w 80\n", "icon": "vitetris\n"}
+,
+  {"name": "wheelmap.org\n", "exec": "kde-geo-uri-handler --coordinate-template https://wheelmap.org/?lat=<LAT>&lon=<LON> --query-template https://wheelmap.org/search?q=<Q> --fallback https://wheelmap.org\n", "icon": "map-globe\n"}
+,
+  {"name": "WPS Spreadsheets\n", "exec": "/usr/bin/et\n", "icon": "wps-office2019-etmain\n"}
+,
+  {"name": "WPS PDF\n", "exec": "/usr/bin/wpspdf\n", "icon": "wps-office2019-pdfmain\n"}
+,
+  {"name": "WPS 2019\n", "exec": "/usr/bin/wps\n", "icon": "wps-office2019-kprometheus\n"}
+,
+  {"name": "WPS Presentation\n", "exec": "/usr/bin/wpp\n", "icon": "wps-office2019-wppmain\n"}
+,
+  {"name": "WPS Writer\n", "exec": "/usr/bin/wps\n", "icon": "wps-office2019-wpsmain\n"}
+,
+  {"name": "Portal\n", "exec": "/usr/lib/xdg-desktop-portal-gtk\n", "icon": "applications-system-symbolic\n"}
+,
+  {"name": "xgps\n", "exec": "xgps\n", "icon": "/usr/share/gpsd/icons/gpsd-logo.png\n"}
+,
+  {"name": "xgpsspeed\n", "exec": "xgpsspeed\n", "icon": "/usr/share/gpsd/icons/gpsd-logo.png\n"}
+,
+  {"name": "Zen Browser\n", "exec": "/opt/zen-browser-bin/zen-bin\n", "icon": "zen-browser\n"}
+,
+  {"name": "Athas\n", "exec": "/home/yugaaank/.local/bin/athas\n", "icon": "athas\n"}
+,
+  {"name": "Game 1345366770436800533\n", "exec": "/tmp/.mount_azaharMlJbml/usr/bin/azahar\n", "icon": "\n"}
+]

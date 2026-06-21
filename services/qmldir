@@ -1,0 +1,4 @@
+module services
+singleton ClockService 1.0 ClockService.qml
+singleton BatteryService 1.0 BatteryService.qml
+singleton AudioService 1.0 AudioService.qml

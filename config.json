@@ -1,0 +1,17 @@
+{
+  "layout": {
+    "barMode": "floating",
+    "barMargin": 5,
+    "dockIconSize": 48
+  },
+  "appearance": {
+    "borderRadius": 12,
+    "theme": "material-you",
+    "fontFamily": "Inter",
+    "wallpaperPath": "/home/yugaaank/Pictures/Wallpapers/a_black_sand_with_white_foamy_waves.png"
+  },
+  "widgets": {
+    "showBattery": true,
+    "clockFormat": "hh:mm A"
+  }
+}

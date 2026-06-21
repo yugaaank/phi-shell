@@ -24,21 +24,23 @@ QtObject {
     readonly property bool isReady: primaryDevice !== null
 
     function getIcon() {
-        if (!isReady) return "battery-missing-symbolic";
+        if (!isReady) return "󰂑"; // missing
         let p = percent;
         if (isCharging) {
-            if (p >= 90) return "battery-charging-100-symbolic";
-            if (p >= 60) return "battery-charging-80-symbolic";
-            if (p >= 40) return "battery-charging-60-symbolic";
-            if (p >= 20) return "battery-charging-40-symbolic";
-            return "battery-charging-20-symbolic";
+            if (p >= 90) return "󰂅";
+            if (p >= 80) return "󰂋";
+            if (p >= 60) return "󰢞";
+            if (p >= 40) return "󰢝";
+            if (p >= 20) return "󰂇";
+            return "󰢜";
         } else {
-            if (p >= 90) return "battery-100-symbolic";
-            if (p >= 60) return "battery-80-symbolic";
-            if (p >= 40) return "battery-60-symbolic";
-            if (p >= 20) return "battery-40-symbolic";
-            if (p >= 10) return "battery-20-symbolic";
-            return "battery-empty-symbolic";
+            if (p >= 90) return "󰁹";
+            if (p >= 80) return "󰂁";
+            if (p >= 60) return "󰁿";
+            if (p >= 40) return "󰁽";
+            if (p >= 20) return "󰁻";
+            if (p >= 10) return "󰁺";
+            return "󰂎";
         }
     }
 

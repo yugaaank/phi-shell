@@ -11,10 +11,10 @@ QtObject {
     readonly property bool isMuted: sink ? sink.audio.muted : true
 
     function getIcon() {
-        if (isMuted || volume === 0) return "audio-volume-muted-symbolic";
-        if (volume <= 33) return "audio-volume-low-symbolic";
-        if (volume <= 66) return "audio-volume-medium-symbolic";
-        return "audio-volume-high-symbolic";
+        if (isMuted || volume === 0) return "󰖁"; // muted
+        if (volume <= 33) return "󰕿"; // low
+        if (volume <= 66) return "󰖀"; // medium
+        return "󰕾"; // high
     }
 
     readonly property string icon: getIcon()

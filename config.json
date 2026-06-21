@@ -1,14 +1,14 @@
 {
   "layout": {
-    "barMode": "floating",
+    "barMode": "attached",
     "barMargin": 5,
     "dockIconSize": 30
   },
   "appearance": {
-    "borderRadius": 12,
+    "borderRadius": 23,
     "theme": "material-you",
     "fontFamily": "Inter",
-    "wallpaperPath": "/home/yugaaank/Pictures/Wallpapers/a_computer_generated_image_of_a_machine.png"
+    "wallpaperPath": "/home/yugaaank/Pictures/Wallpapers/a_painting_of_a_man_with_a_face_on_his_head.png"
   },
   "widgets": {
     "showBattery": true,

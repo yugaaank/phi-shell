@@ -37,115 +37,118 @@ PanelWindow {
         height: 600
         anchors.centerIn: parent
     
-    StyledRect {
-        anchors.fill: parent
-        color: Qt.alpha(Colors.surface, 0.9)
-        
-        Column {
+        Rectangle {
             anchors.fill: parent
-            anchors.margins: 24
-            spacing: 16
+            color: Qt.alpha(Colors.surface, 0.9)
+            radius: Config.borderRadius
+            border.color: Colors.surfaceBorder
+            border.width: 1
             
-            // Search Bar
-            StyledRect {
-                width: parent.width
-                height: 48
-                color: Qt.alpha(Colors.foreground, 0.1)
-                radius: 8
+            Column {
+                anchors.fill: parent
+                anchors.margins: 24
+                spacing: 16
                 
-                TextInput {
-                    id: searchInput
-                    anchors.fill: parent
-                    anchors.margins: 12
-                    color: Colors.foreground
-                    font.pixelSize: 18
-                    font.family: Config.fontFamily
-                    verticalAlignment: TextInput.AlignVCenter
-                    // Ensure it grabs focus when the launcher opens
-                    onVisibleChanged: if (visible) forceActiveFocus()
-                }
-            }
-            
-            // App List
-            ListView {
-                id: appList
-                width: parent.width
-                height: parent.height - 64
-                clip: true
-                spacing: 8
-                
-                model: []
-                
-                // Read apps.json
-                FileView {
-                    path: Quickshell.env("HOME") + "/.config/myshell/apps.json"
-                    onTextChanged: {
-                        try {
-                            appList.model = JSON.parse(text());
-                        } catch (e) {
-                            console.error("Error parsing apps.json", e);
-                        }
+                // Search Bar
+                Rectangle {
+                    width: parent.width
+                    height: 48
+                    color: Qt.alpha(Colors.foreground, 0.1)
+                    radius: Math.min(Config.borderRadius, 8)
+                    
+                    TextInput {
+                        id: searchInput
+                        anchors.fill: parent
+                        anchors.margins: 12
+                        color: Colors.foreground
+                        font.pixelSize: 18
+                        font.family: Config.fontFamily
+                        verticalAlignment: TextInput.AlignVCenter
+                        // Ensure it grabs focus when the launcher opens
+                        onVisibleChanged: if (visible) forceActiveFocus()
                     }
                 }
                 
-                delegate: StyledRect {
-                    width: appList.width
-                    color: "transparent"
-                    radius: 8
+                // App List
+                ListView {
+                    id: appList
+                    width: parent.width
+                    height: parent.height - 64
+                    clip: true
+                    spacing: 8
                     
-                    // Filter based on search input
-                    property bool matchesSearch: searchInput.text === "" || modelData.name.toLowerCase().includes(searchInput.text.toLowerCase())
-                    visible: matchesSearch
-                    height: visible ? 56 : 0
+                    model: []
                     
-                    Row {
-                        anchors.fill: parent
-                        anchors.margins: 8
-                        spacing: 12
+                    // Read apps.json
+                    FileView {
+                        path: Quickshell.env("HOME") + "/.config/myshell/apps.json"
+                        onTextChanged: {
+                            try {
+                                appList.model = JSON.parse(text());
+                            } catch (e) {
+                                console.error("Error parsing apps.json", e);
+                            }
+                        }
+                    }
+                    
+                    delegate: Rectangle {
+                        width: appList.width
+                        color: "transparent"
+                        radius: Math.min(Config.borderRadius, 8)
                         
-                        // Fake icon for now
-                        Rectangle {
-                            width: 40
-                            height: 40
-                            radius: 8
-                            color: Colors.primary
+                        // Filter based on search input
+                        property bool matchesSearch: searchInput.text === "" || modelData.name.toLowerCase().includes(searchInput.text.toLowerCase())
+                        visible: matchesSearch
+                        height: visible ? 56 : 0
+                        
+                        Row {
+                            anchors.fill: parent
+                            anchors.margins: 8
+                            spacing: 12
+                            
+                            // Fake icon for now
+                            Rectangle {
+                                width: 40
+                                height: 40
+                                radius: Math.min(Config.borderRadius, 8)
+                                color: Colors.primary
+                                Text {
+                                    text: modelData.name.charAt(0).toUpperCase()
+                                    anchors.centerIn: parent
+                                    color: Colors.surface
+                                    font.bold: true
+                                }
+                            }
+                            
                             Text {
-                                text: modelData.name.charAt(0).toUpperCase()
-                                anchors.centerIn: parent
-                                color: Colors.surface
-                                font.bold: true
+                                text: modelData.name
+                                color: Colors.foreground
+                                font.pixelSize: 16
+                                font.family: Config.fontFamily
+                                anchors.verticalCenter: parent.verticalCenter
                             }
                         }
                         
-                        Text {
-                            text: modelData.name
-                            color: Colors.foreground
-                            font.pixelSize: 16
-                            font.family: Config.fontFamily
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                    }
-                    
-                    MouseArea {
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: {
-                            Quickshell.execDetached(["bash", "-c", "hyprctl dispatch exec \"" + modelData.exec + "\" || " + modelData.exec])
-                            GlobalStates.launcherOpen = false
-                            searchInput.text = ""
-                        }
-                        
-                        Rectangle {
+                        MouseArea {
                             anchors.fill: parent
-                            color: "white"
-                            opacity: parent.containsMouse ? 0.1 : 0
-                            radius: 8
+                            hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: {
+                                Quickshell.execDetached(["bash", "-c", "hyprctl dispatch exec \"" + modelData.exec + "\" || " + modelData.exec])
+                                GlobalStates.launcherOpen = false
+                                searchInput.text = ""
+                            }
+                            
+                            Rectangle {
+                                anchors.fill: parent
+                                color: "white"
+                                opacity: parent.containsMouse ? 0.1 : 0
+                                radius: parent.radius
+                            }
                         }
                     }
                 }
             }
         }
     }
-}
 }

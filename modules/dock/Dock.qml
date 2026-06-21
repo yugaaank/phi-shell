@@ -39,7 +39,7 @@ PanelWindow {
             Rectangle {
                 width: Config.dockIconSize
                 height: Config.dockIconSize
-                radius: Config.borderRadius > 0 ? Config.dockIconSize / 4 : 0
+                radius: Math.min(Config.borderRadius, height / 2)
                 color: Colors.primary
                 
                 Text {
@@ -83,7 +83,7 @@ PanelWindow {
                 Rectangle {
                     width: Config.dockIconSize
                     height: Config.dockIconSize
-                    radius: Config.borderRadius > 0 ? Config.dockIconSize / 4 : 0
+                    radius: Math.min(Config.borderRadius, height / 2)
                     color: modelData === ToplevelManager.activeToplevel ? Colors.primary : Colors.surfaceBorder
                     
                     Behavior on color { ColorAnimation { duration: 250 } }

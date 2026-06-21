@@ -5,8 +5,8 @@ import "core"
 import "modules/bar"
 import "modules/dock"
 import "modules/desktop"
-
 import "modules/popups"
+import "modules/settings"
 
 ShellRoot {
     id: root
@@ -15,4 +15,5 @@ ShellRoot {
     TopBar {}
     Dock {}
     AppLauncher {}
+    SettingsApp {}
 }

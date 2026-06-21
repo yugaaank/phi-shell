@@ -14,17 +14,17 @@ PanelWindow {
     }
     
     margins {
-        top: Config.barMargin
-        left: Config.barMargin
-        right: Config.barMargin
+        top: Config.barMode === "floating" ? Config.barMargin : 0
+        left: Config.barMode === "floating" ? Config.barMargin : 0
+        right: Config.barMode === "floating" ? Config.barMargin : 0
     }
 
     WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.namespace: "myshell-bar"
     
-    exclusiveZone: implicitHeight + (Config.barMargin * 2)
+    exclusiveZone: implicitHeight + (Config.barMode === "floating" ? Config.barMargin * 2 : 0)
 
-    color: "transparent"
+    color: Config.barMode === "attached" ? Colors.surface : "transparent"
     implicitHeight: 30
     
     // Left: Workspaces
@@ -34,8 +34,8 @@ PanelWindow {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         width: wsItem.width + 24
-        color: Qt.alpha(Colors.surface, 0.6)
-        radius: height / 2
+        color: Config.barMode === "attached" ? "transparent" : Qt.alpha(Colors.surface, 0.6)
+        radius: Config.barMode === "attached" ? 0 : Config.borderRadius
         
         WorkspacesWidget {
             id: wsItem
@@ -50,8 +50,8 @@ PanelWindow {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         width: clockItem.width + 32
-        color: Qt.alpha(Colors.surface, 0.6)
-        radius: height / 2
+        color: Config.barMode === "attached" ? "transparent" : Qt.alpha(Colors.surface, 0.6)
+        radius: Config.barMode === "attached" ? 0 : Config.borderRadius
         
         ClockWidget {
             id: clockItem
@@ -66,13 +66,33 @@ PanelWindow {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         width: rightContent.width + 32
-        color: Qt.alpha(Colors.surface, 0.6)
-        radius: height / 2
+        color: Config.barMode === "attached" ? "transparent" : Qt.alpha(Colors.surface, 0.6)
+        radius: Config.barMode === "attached" ? 0 : Config.borderRadius
         
         Row {
             id: rightContent
             anchors.centerIn: parent
             spacing: 16
+            
+            // Settings Button
+            Item {
+                width: 24
+                height: 24
+                anchors.verticalCenter: parent.verticalCenter
+                
+                Text {
+                    text: "⚙"
+                    color: Colors.foreground
+                    font.pixelSize: 18
+                    anchors.centerIn: parent
+                }
+                
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: GlobalStates.settingsOpen = !GlobalStates.settingsOpen
+                }
+            }
             
             AudioWidget {}
             BatteryWidget {}

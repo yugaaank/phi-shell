@@ -1,8 +1,8 @@
 {
-  "background": "#18120b",
-  "foreground": "#ede0d4",
-  "primary": "#f4bd6e",
-  "secondary": "#ddc2a1",
-  "surface": "#251f17",
+  "background": "#18130b",
+  "foreground": "#ede1d4",
+  "primary": "#f2be6e",
+  "secondary": "#dcc3a1",
+  "surface": "#241f17",
   "surfaceBorder": "#4f4539"
 }

@@ -1,58 +1,85 @@
 <div align="center">
 
-# 🐚 phi-shell
+# phi-shell
 
-**A QML-based desktop shell — modular components, services, and themable colors.**
-
-[![Stack](https://img.shields.io/badge/stack-QML%20%2F%20Qt-8b5cf6?style=for-the-badge)](https://doc.qt.io)
-[![Status](https://img.shields.io/badge/status-WIP-8b5cf6?style=for-the-badge)](#)
-[![PRs](https://img.shields.io/badge/PRs-welcome-8b5cf6?style=for-the-badge)](#contributing)
+[![Quickshell](https://img.shields.io/badge/Quickshell-QtQuick%20Wayland-41CD52?logo=qt&logoColor=white)](https://quickshell.org)
+[![QML](https://img.shields.io/badge/UI-QML%2FQtQuick-41B883?logo=qt&logoColor=white)](#architecture)
+[![License](https://img.shields.io/badge/license-MIT-8b5cf6)](#license)
 
 </div>
 
----
+`phi-shell` is a desktop shell written in QML for [Quickshell](https://quickshell.org)
+— a Wayland shell toolkit built on QtQuick. Rather than stitching together a
+separate bar, dock, launcher, and settings app, `phi-shell` defines them as
+modules in one process, driven by a single JSON config.
 
-<div align="center">
+## Why
 
-| | |
-|---|---|
-| 🎯 **Purpose** | Desktop shell built on QML/Qt |
-| 🧩 **Stack** | QML · Qt · JSON config |
-| 🌑 **Theme** | Dark / rich |
-| 📦 **Status** | In development |
+A desktop shell is really one cohesive surface. `phi-shell` keeps the bar,
+dock, desktop, popups, and settings as modules of the same `ShellRoot`, so
+theming, layout, and widget wiring live in one place instead of in several
+unsynchronized tools.
 
-</div>
+## Architecture
 
----
+`shell.qml` declares the root and mounts the modules:
 
-## ✨ Features
-
-- 🧩 **Modular** — `core/`, `modules/`, `services/`, `components/`
-- 🎨 **Themable** — `colors.json` + `apps.json` drive look and launchers
-- 🖥️ Entry point `shell.qml` with a service-test harness (`test_svc.qml`)
-- 🔧 `scripts/` for build / dev helpers
-
-## 🚀 Quick start
-
-```bash
-# open the shell with qmlscene (or your Qt runtime)
-qmlscene shell.qml
+```qml
+ShellRoot {
+    Desktop {} TopBar {} Dock {} AppLauncher {}
+    SettingsApp {} Dashboard {} Sidebar {}
+}
 ```
-
-## 📁 Structure
 
 ```
 phi-shell/
-├── shell.qml         # entry point
-├── core/  modules/  services/  components/
-├── config.json  colors.json  apps.json
-└── scripts/
+├── shell.qml           # entry: ShellRoot + module mounts
+├── core/               # Colors.qml, Config.qml, GlobalStates.qml, qmldir
+├── modules/
+│   ├── bar/  TopBar.qml
+│   ├── dock/ Dock.qml
+│   ├── desktop/        # Desktop + AppLauncher
+│   ├── popups/         # transient surfaces
+│   └── settings/       # SettingsApp + SettingRow* (toggle/slider/dropdown/text)
+├── services/           # AudioService, BatteryService, ClockService (qmldir)
+├── components/         # ActiveWindowWidget, WorkspacesWidget, ClockWidget,
+│                       # AudioWidget, BatteryWidget, StyledRect
+├── config.json         # layout + appearance + widgets
+├── colors.json apps.json
+└── scripts/            # extract_colors.sh, generate_colors.py,
+                        # update_apps.sh, update_config.sh
 ```
 
-## 🤝 Contributing
+- **Services** — `AudioService`/`BatteryService`/`ClockService` expose live
+  state (volume, charge, time) that widgets bind to.
+- **Widgets** — composable QML components placed into the bar via
+  `config.json` (`barLeft` / `barCenter` / `barRight`).
+- **Theming** — `colors.json` + `config.json` (`theme`, `borderRadius`,
+  `fontFamily`, `wallpaperPath`) drive the look; `scripts/generate_colors.py`
+  and `extract_colors.sh` regenerate palettes.
 
-PRs welcome — match the dark/rich README style.
+## Configuration
 
-## 📜 License
+`config.json` controls layout (`barMode`, `barMargin`, `dockIconSize`),
+appearance (`theme`, `borderRadius`, `fontFamily`, `wallpaperPath`), and which
+widgets sit in each bar zone. `apps.json` feeds the launcher.
 
-MIT © Yugank Rathore
+## Getting started
+
+Requires Quickshell (QtQuick + Wayland).
+
+```bash
+# run the shell with quickshell
+quickshell shell.qml
+```
+
+Theme helpers:
+
+```bash
+python scripts/generate_colors.py     # build colors.json from an image
+./scripts/update_config.sh             # apply config changes
+```
+
+## License
+
+MIT
